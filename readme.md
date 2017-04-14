@@ -1,4 +1,4 @@
-# 2Write
+# write
 Social writing
 
 
