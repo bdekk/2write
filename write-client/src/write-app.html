@@ -28,7 +28,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <template>
     <style>
       :host {
-        --app-primary-color: #ddd;
+        --app-primary-color: #fafafa;
         --app-secondary-color: black;
 
         display: block;
@@ -37,6 +37,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app-header {
         color: var(--app-secondary-color);
         background-color: var(--app-primary-color);
+        border-bottom: 1px solid #ddd;
       }
 
       app-header paper-icon-button {
@@ -61,33 +62,33 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         tail="{{subroute}}"></app-route>
 
       <!-- Main content -->
-    <app-header-layout has-scrolling-region>
+    <app-header-layout fullbleed has-scrolling-region>
 
       <app-header slot="header" condenses reveals effects="waterfall">
-        <app-toolbar>
+        <app-toolbar sticky>
           <div main-title>2 Write</div>
           <iron-selector selected="{{page}}" attr-for-selected="name" class="navbar" role="navigation">
             <!--<a name="view1" href="view1">View One</a>
             <a name="view2" href="view2">View Two</a>
             <a name="view3" href="view3">View Three</a>-->
-              <paper-button name="view1">View 1</paper-button>
+              <paper-button name="projects">Projects</paper-button>
             <paper-button name="view2">View 2</paper-button>
             <paper-button name="view3">View 3</paper-button>
-            <paper-button name="view4">View 4</paper-button>
           </iron-selector>
         </app-toolbar>
       </app-header>
-
-      <iron-pages
-          selected="[[page]]"
-          attr-for-selected="name"
-          fallback-selection="view404"
-          role="main">
-        <write-view1 name="view1"></write-view1>
-        <write-view2 name="view2"></write-view2>
-        <write-view3 name="view3"></write-view3>
-        <write-view404 name="view404"></write-view404>
-      </iron-pages>
+      <div>
+        <iron-pages
+            selected="[[page]]"
+            attr-for-selected="name"
+            fallback-selection="view404"
+            role="main">
+          <write-projects name="projects"></write-view1>
+          <write-view2 name="view2"></write-view2>
+          <write-view3 name="view3"></write-view3>
+          <write-view404 name="view404"></write-view404>
+        </iron-pages>
+      </div>
     </app-header-layout>
   </template>
 
