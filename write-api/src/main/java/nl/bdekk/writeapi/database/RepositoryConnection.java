@@ -1,6 +1,7 @@
 package nl.bdekk.writeapi.database;
 
 import nl.bdekk.writeapi.dto.User;
+import org.eclipse.jgit.api.CommitCommand;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.ObjectId;
@@ -36,8 +37,8 @@ public class RepositoryConnection {
     public Repository createRepo(String repositoryName) throws IOException {
         // prepare a new folder
         final String HOME_DIR = System.getProperty("user.home");
-        File dir = new File(HOME_DIR + GIT_DIR + "/" + repositoryName + TYPE);
-        if(!dir.exists()) {
+        File dir = new File(HOME_DIR + GIT_DIR + "/" + repositoryName);
+        if(dir.exists()) {
             throw new IOException("Project already exists.");
         }
 
@@ -46,7 +47,7 @@ public class RepositoryConnection {
         }
 
         // create the directory
-        Repository repository = FileRepositoryBuilder.create(new File(dir, ".git"));
+        Repository repository = FileRepositoryBuilder.create(new File(dir, TYPE));
         repository.create();
 
         return repository;
@@ -71,11 +72,14 @@ public class RepositoryConnection {
 
     public ObjectId commit(Repository repository, String message, User author) throws GitAPIException {
         try (Git git = new Git(repository)) {
-            RevCommit com = git.commit()
-                    .setMessage(message)
-                    .setAuthor(author.getUsername(), author.getEmail())
-                    .call();
-            return com.getId();
+            CommitCommand command = git.commit().setMessage(message);
+
+            if(author != null) {
+                command.setAuthor(author.getUsername(), author.getEmail());
+            }
+
+            RevCommit revCommit = command.call();
+            return revCommit.getId();
         }
     }
 }

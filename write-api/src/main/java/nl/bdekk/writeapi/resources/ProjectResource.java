@@ -1,14 +1,13 @@
 package nl.bdekk.writeapi.resources;
 
+import nl.bdekk.writeapi.dto.Error;
 import nl.bdekk.writeapi.dto.Project;
 import nl.bdekk.writeapi.services.ProjectService;
-import org.eclipse.jgit.api.errors.GitAPIException;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
 import java.util.List;
 
 @ApplicationScoped
@@ -32,13 +31,15 @@ public class ProjectResource {
         Project project = null;
         try {
             project = projectService.createProject("project 1", "Description");
-        } catch (IOException | GitAPIException e) {
-            return Response.status(Response.Status.BAD_REQUEST).entity(e.getMessage()).build();
+        } catch (Exception e) {
+            Error err = new Error();
+            err.setMessage(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(err).build();
         }
 
         return Response
-                .ok(project)
                 .status(Response.Status.CREATED)
+                .entity(project)
                 .build();
     }
 }
