@@ -19,47 +19,37 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="write-icons.html">
 
 <dom-module id="write-app">
   <template>
     <style>
       :host {
-        --app-primary-color: #4285f4;
+        --app-primary-color: #ddd;
         --app-secondary-color: black;
 
         display: block;
       }
 
-      app-drawer-layout:not([narrow]) [drawer-toggle] {
-        display: none;
-      }
-
       app-header {
-        color: #fff;
+        color: var(--app-secondary-color);
         background-color: var(--app-primary-color);
       }
 
       app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
+        --paper-icon-button-ink-color: var(--app-secondary-color);
       }
 
-      .drawer-list {
-        margin: 0 20px;
-      }
-
-      .drawer-list a {
-        display: block;
+      .navbar a {
+        display: inline-block;
         padding: 0 16px;
+        color: #000;
         text-decoration: none;
         color: var(--app-secondary-color);
         line-height: 40px;
-      }
-
-      .drawer-list a.iron-selected {
-        color: black;
-        font-weight: bold;
       }
     </style>
 
@@ -70,39 +60,35 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         data="{{routeData}}"
         tail="{{subroute}}"></app-route>
 
-    <app-drawer-layout fullbleed>
-      <!-- Drawer content -->
-      <app-drawer id="drawer" slot="drawer">
-        <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="view1" href="view1">View One</a>
-          <a name="view2" href="view2">View Two</a>
-          <a name="view3" href="view3">View Three</a>
-        </iron-selector>
-      </app-drawer>
-
       <!-- Main content -->
-      <app-header-layout has-scrolling-region>
+    <app-header-layout has-scrolling-region>
 
-        <app-header slot="header" condenses reveals effects="waterfall">
-          <app-toolbar>
-            <paper-icon-button icon="write-icons:menu" drawer-toggle></paper-icon-button>
-            <div main-title>My App</div>
-          </app-toolbar>
-        </app-header>
+      <app-header slot="header" condenses reveals effects="waterfall">
+        <app-toolbar>
+          <div main-title>2 Write</div>
+          <iron-selector selected="{{page}}" attr-for-selected="name" class="navbar" role="navigation">
+            <!--<a name="view1" href="view1">View One</a>
+            <a name="view2" href="view2">View Two</a>
+            <a name="view3" href="view3">View Three</a>-->
+              <paper-button name="view1">View 1</paper-button>
+            <paper-button name="view2">View 2</paper-button>
+            <paper-button name="view3">View 3</paper-button>
+            <paper-button name="view4">View 4</paper-button>
+          </iron-selector>
+        </app-toolbar>
+      </app-header>
 
-        <iron-pages
-            selected="[[page]]"
-            attr-for-selected="name"
-            fallback-selection="view404"
-            role="main">
-          <write-view1 name="view1"></write-view1>
-          <write-view2 name="view2"></write-view2>
-          <write-view3 name="view3"></write-view3>
-          <write-view404 name="view404"></write-view404>
-        </iron-pages>
-      </app-header-layout>
-    </app-drawer-layout>
+      <iron-pages
+          selected="[[page]]"
+          attr-for-selected="name"
+          fallback-selection="view404"
+          role="main">
+        <write-view1 name="view1"></write-view1>
+        <write-view2 name="view2"></write-view2>
+        <write-view3 name="view3"></write-view3>
+        <write-view404 name="view404"></write-view404>
+      </iron-pages>
+    </app-header-layout>
   </template>
 
   <script>
@@ -144,11 +130,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // If no page was found in the route data, page will be an empty string.
         // Deault to 'view1' in that case.
         this.page = page || 'view1';
-
-        // Close a non-persistent drawer when the page & route are changed.
-        if (!this.$.drawer.persistent) {
-          this.$.drawer.close();
-        }
       }
 
       _pageChanged(page) {
