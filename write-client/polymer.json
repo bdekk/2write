@@ -1,11 +1,11 @@
 {
   "entrypoint": "index.html",
-  "shell": "src/my-app.html",
+  "shell": "src/write-app.html",
   "fragments": [
-    "src/my-view1.html",
-    "src/my-view2.html",
-    "src/my-view3.html",
-    "src/my-view404.html"
+    "src/write-view1.html",
+    "src/write-view2.html",
+    "src/write-view3.html",
+    "src/write-view404.html"
   ],
   "sources": [
     "src/**/*",
