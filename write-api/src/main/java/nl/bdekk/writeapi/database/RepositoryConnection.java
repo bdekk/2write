@@ -1,6 +1,6 @@
-package nl.bdekk.writeapi.writeapi.rest.database;
+package nl.bdekk.writeapi.database;
 
-import nl.bdekk.writeapi.writeapi.rest.dto.User;
+import nl.bdekk.writeapi.dto.User;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.ObjectId;

@@ -10,6 +10,8 @@
 
   <properties>
     <version.wildfly.swarm>2017.4.0</version.wildfly.swarm>
+    <version.junit>4.12</version.junit>
+    <version.rest-assured>3.0.2</version.rest-assured>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -61,82 +63,89 @@
     </plugins>
   </build>
 
-  <profiles>
-    <profile>
-      <id>docker</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>io.fabric8</groupId>
-            <artifactId>docker-maven-plugin</artifactId>
-            <configuration>
-              <images>
-                <image>
-                  <name>${project.build.finalName}</name>
-                  <run>
-                    <ports>
-                      <port>8080:8080</port>
-                    </ports>
-                  </run>
-                  <build>
-                    <from>java:openjdk-8-jdk</from>
-                    <ports>
-                      <port>8080</port>
-                    </ports>
-                    <assembly>
-                      <basedir>/</basedir>
-                      <inline>
-                        <files>
-                          <file>
-                            <source>${project.build.directory}/${project.artifactId}-swarm.jar</source>
-                            <outputDirectory>/opt</outputDirectory>
-                          </file>
-                        </files>
-                      </inline>
-                    </assembly>
-                    <entryPoint>
-                      <shell>java -jar /opt/${project.artifactId}-swarm.jar</shell>
-                    </entryPoint>
-                  </build>
-                </image>
-              </images>
-            </configuration>
-            <executions>
-              <execution>
-                <phase>package</phase>
-                <goals>
-                  <goal>build</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>pre-integration-test</id>
-                <phase>pre-integration-test</phase>
-                <goals>
-                  <goal>start</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>post-integration-test</id>
-                <phase>post-integration-test</phase>
-                <goals>
-                  <goal>stop</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+  <!-- jenkins -->
+  <!--<profiles>-->
+    <!--<profile>-->
+      <!--<id>docker</id>-->
+      <!--<build>-->
+        <!--<plugins>-->
+          <!--<plugin>-->
+            <!--<groupId>io.fabric8</groupId>-->
+            <!--<artifactId>docker-maven-plugin</artifactId>-->
+            <!--<configuration>-->
+              <!--<images>-->
+                <!--<image>-->
+                  <!--<name>${project.build.finalName}</name>-->
+                  <!--<run>-->
+                    <!--<ports>-->
+                      <!--<port>8080:8080</port>-->
+                    <!--</ports>-->
+                  <!--</run>-->
+                  <!--<build>-->
+                    <!--<from>java:openjdk-8-jdk</from>-->
+                    <!--<ports>-->
+                      <!--<port>8080</port>-->
+                    <!--</ports>-->
+                    <!--<assembly>-->
+                      <!--<basedir>/</basedir>-->
+                      <!--<inline>-->
+                        <!--<files>-->
+                          <!--<file>-->
+                            <!--<source>${project.build.directory}/${project.artifactId}-swarm.jar</source>-->
+                            <!--<outputDirectory>/opt</outputDirectory>-->
+                          <!--</file>-->
+                        <!--</files>-->
+                      <!--</inline>-->
+                    <!--</assembly>-->
+                    <!--<entryPoint>-->
+                      <!--<shell>java -jar /opt/${project.artifactId}-swarm.jar</shell>-->
+                    <!--</entryPoint>-->
+                  <!--</build>-->
+                <!--</image>-->
+              <!--</images>-->
+            <!--</configuration>-->
+            <!--<executions>-->
+              <!--<execution>-->
+                <!--<phase>package</phase>-->
+                <!--<goals>-->
+                  <!--<goal>build</goal>-->
+                <!--</goals>-->
+              <!--</execution>-->
+              <!--<execution>-->
+                <!--<id>pre-integration-test</id>-->
+                <!--<phase>pre-integration-test</phase>-->
+                <!--<goals>-->
+                  <!--<goal>start</goal>-->
+                <!--</goals>-->
+              <!--</execution>-->
+              <!--<execution>-->
+                <!--<id>post-integration-test</id>-->
+                <!--<phase>post-integration-test</phase>-->
+                <!--<goals>-->
+                  <!--<goal>stop</goal>-->
+                <!--</goals>-->
+              <!--</execution>-->
+            <!--</executions>-->
+          <!--</plugin>-->
+        <!--</plugins>-->
+      <!--</build>-->
+    <!--</profile>-->
+  <!--</profiles>-->
 
   <dependencies>
-    <!-- Java EE 7 dependency -->
     <dependency>
       <groupId>javax</groupId>
       <artifactId>javaee-api</artifactId>
       <version>7.0</version>
       <scope>provided</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${version.jackson}</version>
+    </dependency>
+
     <!-- WildFly Swarm Fractions -->
     <dependency>
       <groupId>org.wildfly.swarm</groupId>
@@ -152,11 +161,7 @@
       <artifactId>jaxrs</artifactId>
     </dependency>
 
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-core</artifactId>
-      <version>${version.jackson}</version>
-    </dependency>
+
 
     <!-- Core Library -->
       <dependency>
@@ -185,6 +190,18 @@
         <version>4.7.0.201704051617-r</version>
       </dependency>
 
+      <!-- test dependencies -->
+      <dependency>
+        <groupId>io.rest-assured</groupId>
+        <artifactId>rest-assured</artifactId>
+        <version>${version.rest-assured}</version>
+      </dependency>
+
+      <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>${version.junit}</version>
+      </dependency>
 
   </dependencies>
 

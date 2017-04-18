@@ -1,4 +1,4 @@
-package nl.bdekk.writeapi.writeapi.rest.application;
+package nl.bdekk.writeapi.application;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.ws.rs.ApplicationPath;
