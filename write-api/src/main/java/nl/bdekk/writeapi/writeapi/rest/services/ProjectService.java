@@ -14,17 +14,9 @@ public class ProjectService {
     @Inject
     private ProjectDao dao;
 
-    public Project createProject(String bookTwo) {
+    public Project createProject(String title, String description) throws IOException, GitAPIException {
         Project project = null;
-
-        try {
-            project = dao.createProject();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (GitAPIException e) {
-            e.printStackTrace();
-        }
-
+        project = dao.createProject(title, description);
         return project;
     }
 }

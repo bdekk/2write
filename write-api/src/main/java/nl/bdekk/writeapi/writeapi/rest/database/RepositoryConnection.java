@@ -1,5 +1,6 @@
 package nl.bdekk.writeapi.writeapi.rest.database;
 
+import nl.bdekk.writeapi.writeapi.rest.dto.User;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.ObjectId;
@@ -36,6 +37,9 @@ public class RepositoryConnection {
         // prepare a new folder
         final String HOME_DIR = System.getProperty("user.home");
         File dir = new File(HOME_DIR + GIT_DIR + "/" + repositoryName + TYPE);
+        if(!dir.exists()) {
+            throw new IOException("Project already exists.");
+        }
 
         if(!dir.mkdirs()) {
             throw new IOException("Could not create directory " + dir);
@@ -65,10 +69,11 @@ public class RepositoryConnection {
         }
     }
 
-    public ObjectId commit(Repository repository, String message) throws GitAPIException {
+    public ObjectId commit(Repository repository, String message, User author) throws GitAPIException {
         try (Git git = new Git(repository)) {
             RevCommit com = git.commit()
                     .setMessage(message)
+                    .setAuthor(author.getUsername(), author.getEmail())
                     .call();
             return com.getId();
         }

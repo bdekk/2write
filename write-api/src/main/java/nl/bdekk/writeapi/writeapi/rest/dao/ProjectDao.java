@@ -2,6 +2,7 @@ package nl.bdekk.writeapi.writeapi.rest.dao;
 
 import nl.bdekk.writeapi.writeapi.rest.database.RepositoryConnection;
 import nl.bdekk.writeapi.writeapi.rest.dto.Project;
+import nl.bdekk.writeapi.writeapi.rest.dto.User;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Repository;
@@ -24,21 +25,19 @@ public class ProjectDao {
     }
 
     public void getDocument() {
-//        con.getRepo();
     }
 
-    public Project createProject() throws IOException, GitAPIException {
-        Repository repo = con.createRepo("book2");
+    public Project createProject(String title, String description) throws IOException, GitAPIException {
+        Repository repo = con.createRepo(title);
         con.addFile(repo, "chapter1.md", "Enjoy writing".getBytes());
         con.addFile(repo, "chapter2.md", "Enjoy writing".getBytes());
         con.addFile(repo, "chapter3.md", "Enjoy writing".getBytes());
-        con.commit(repo, "Added initial chapters.");
+        con.commit(repo, "Added initial chapters.", null);
 
         Project project = new Project();
         project.setName(repo.getRemoteName(Constants.HEAD));
         project.setFiles(Arrays.asList(repo.getDirectory()));
         return project;
     }
-
 
 }
