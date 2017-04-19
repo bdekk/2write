@@ -4,6 +4,9 @@
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../bower_components/paper-item/paper-item-body.html">
+<link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="write-new-project.html">
 <link rel="import" href="shared-styles.html">
 
@@ -62,14 +65,24 @@
       </paper-icon-button>
     </paper-input>
 
-    <template is="dom-repeat" items="[[projects]]" as="project">
-      <div class="flex-horizontal">
-        <div class="card flex2child">
-          <h3>{{project.name}}</h3>
-          <p>{{project.description}}</p>
-        </div>
-      </div>
-    </template>
+    <div class="flex-horizontal">
+      <template is="dom-repeat" items="[[projects]]" as="project">
+          <div class="card flex2child">
+            <h3>{{project.name}}</h3>
+            <p>{{project.description}}</p>
+            <div role="listbox">
+              <template is="dom-repeat" items="[[project.files]]" as="file">
+                <paper-item on-click="fileSelected">
+                  <paper-item-body two-line>
+                    <div>[[file]]</div>
+                    <div secondary>last updated: 27-01-2010</div>
+                  </paper-item-body>
+                </paper-item>
+              </template>
+            </div>
+          </div>
+      </template>
+    </div>
     <paper-button on-click="openNewProjectDialog">New project</paper-button>
 
     <write-new-project id="newProjectDialog" open="true"></write-new-project>
@@ -150,6 +163,11 @@
         let project = event.detail.project;
         this.$.createProjectAjax.body = JSON.stringify(project);
         this.$.createProjectAjax.generateRequest();
+      }
+
+      fileSelected(event) {
+        console.log(event.model.__data);
+        console.log(event.model.parentModel.__data);
       }
     }
 
