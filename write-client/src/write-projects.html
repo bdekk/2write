@@ -12,19 +12,33 @@
       }
     </style>
 
+    <custom-style>
+      <style is="custom-style">
+        .flex-horizontal {
+          @apply --layout-horizontal;
+        }
+        .flex2child {
+          @apply --layout-flex-2;
+        }
+      </style>
+    </custom-style>
+
     <iron-ajax
       id="getProjectsAjax"
       url="[[projectsUrl]]"
       handle-as="json"
-      on-response="_onGetProjects"
-      debounce-duration="300">
+      content-type="application/json"
+      last-response="{{projects}}">
     </iron-ajax>
 
-    <template is="dom-repeat" items="[[projects]]" as="project"></template>
-    <div class="card">
-      <h3>{{project.name}}</h3>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
-    </div>
+    <template is="dom-repeat" items="[[projects]]" as="project">
+      <div class="flex-horizontal">
+        <div class="card flex2child">
+          <h3>{{project.name}}</h3>
+          <p>Ut labores minimum atomorum pro. Laudem tibique ut has.</p>
+        </div>
+      </div>
+    </template>
   </template>
 
   <script>
@@ -40,7 +54,7 @@
           
           projectsUrl: {
             type: String,
-            value: "http://localhost:8081/project"
+            value: "http://localhost:8080/project"
           },
 
           projects: {

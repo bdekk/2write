@@ -2,7 +2,7 @@
   "entrypoint": "index.html",
   "shell": "src/write-app.html",
   "fragments": [
-    "src/write-view1.html",
+    "src/write-projects.html",
     "src/write-view2.html",
     "src/write-view3.html",
     "src/write-view404.html"
