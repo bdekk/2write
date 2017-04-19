@@ -1,5 +1,9 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="shared-styles.html">
 
 <dom-module id="write-projects">
@@ -9,6 +13,16 @@
         display: block;
 
         padding: 10px;
+      }
+
+      paper-button[dialog-dismiss] {
+        color: #fff;
+        background-color: var(--paper-red-500);
+      }
+
+      paper-button[dialog-confirm] {
+        color: #fff;
+        background-color: var(--paper-green-500);
       }
     </style>
 
@@ -31,6 +45,13 @@
       last-response="{{projects}}">
     </iron-ajax>
 
+    <h2 class="title">All Projects</h2>
+    <paper-input label="username" id="inputWithButton">
+      <iron-icon icon="mail" prefix></iron-icon>
+      <div suffix>@email.com</div>
+      <paper-icon-button suffix onclick="clearInput()" icon="clear" alt="clear" title="clear">
+      </paper-icon-button>
+    </paper-input>
     <template is="dom-repeat" items="[[projects]]" as="project">
       <div class="flex-horizontal">
         <div class="card flex2child">
@@ -39,6 +60,9 @@
         </div>
       </div>
     </template>
+    <paper-button onclick="newProject">New project</paper-button>
+
+    <write-new-project id="newProjectDialog" open></write-new-project>
   </template>
 
   <script>
@@ -77,6 +101,14 @@
       _onGetProjects(event) {
         console.log(event);
       }
+
+      newProject(event) {
+        this.$.newProjectDialog
+      }
+
+      // _newProject(event) {
+
+      // }
     }
 
     window.customElements.define(Projects.is, Projects);

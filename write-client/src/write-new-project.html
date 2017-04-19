@@ -1,0 +1,74 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="write-new-project">
+  <template>
+    <style>
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      paper-button[dialog-dismiss] {
+        color: #fff;
+        background-color: var(--paper-red-500);
+      }
+
+      paper-button[dialog-confirm] {
+        color: #fff;
+        background-color: var(--paper-green-500);
+      }
+    </style>
+
+    <iron-ajax
+      id="getProjectsAjax"
+      url="[[projectsUrl]]"
+      handle-as="json"
+      content-type="application/json"
+      last-response="{{projects}}">
+    </iron-ajax>
+
+    <paper-dialog id="newProject">
+        <h2>New Project</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <div class="buttons">
+          <paper-button dialog-dismiss class="red">Cancel</paper-button>
+          <paper-button dialog-confirm autofocus class="green">Create</paper-button>
+        </div>
+      </paper-dialog>
+  </template>
+
+  <script>
+    class NewProject extends Polymer.Element {
+      static get is() { return 'write-new-project'; }
+
+      static get properties() {
+        return {
+          projectsUrl: {
+            type: String,
+            value: "http://localhost:8080/project"
+          },
+
+          open: {
+              type: Boolean,
+              reflectOnAttribute: true
+          }
+        };
+      }
+
+      _newProject(event) {
+
+      }
+    }
+
+    window.customElements.define(NewProject.is, NewProject);
+  </script>
+</dom-module>
