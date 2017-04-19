@@ -64,8 +64,8 @@ public class ProjectIT {
                 .when()
                 .post(TestUtils.URL + "/project")
                 .then()
-                .statusCode(201);
-//                .body("name", equalTo("book1"));
+                .statusCode(201)
+                .body("name", equalTo("book1"));
     }
 
     @Ignore

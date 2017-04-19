@@ -53,7 +53,7 @@ public class RepositoryConnection {
 
     public List<Repository> getRepos() throws IOException {
         List<Repository> repos = new ArrayList<>();
-        Files.newDirectoryStream(Paths.get(GIT_SERVER_PATH), path -> path.toFile().isDirectory())
+        Files.newDirectoryStream(Paths.get(GIT_SERVER_PATH, "bare"), path -> path.toFile().isDirectory())
                 .forEach(dir -> {
                     try {
                         Path dirWithSlash = Paths.get(dir.toString(), File.separator);
