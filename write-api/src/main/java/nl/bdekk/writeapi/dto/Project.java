@@ -1,16 +1,27 @@
 package nl.bdekk.writeapi.dto;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-
-import java.io.File;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
 
-@JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY )
+@XmlRootElement
 public class Project {
-    private String name;
-    private List<File> files;
-    private List<String> committers;
-    private int complete;
+
+    @XmlElement
+    String name;
+
+    @XmlElement
+    List<String> files;
+
+
+    @XmlElement
+    List<String> committers;
+
+    @XmlElement
+    int complete;
+
+    @XmlElement
+    String description;
 
     public String getName() {
         return name;
@@ -20,11 +31,11 @@ public class Project {
         this.name = name;
     }
 
-    public List<File> getFiles() {
+    public List<String> getFiles() {
         return files;
     }
 
-    public void setFiles(List<File> files) {
+    public void setFiles(List<String> files) {
         this.files = files;
     }
 
@@ -42,5 +53,13 @@ public class Project {
 
     public void setComplete(int complete) {
         this.complete = complete;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

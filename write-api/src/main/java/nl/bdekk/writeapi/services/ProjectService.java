@@ -21,7 +21,7 @@ public class ProjectService {
         return project;
     }
 
-    public List<Project> getProjects() {
+    public List<Project> getProjects() throws IOException {
         return dao.getProjects();
     }
 }

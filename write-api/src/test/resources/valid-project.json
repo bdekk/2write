@@ -1,5 +1,4 @@
 {
-  "project": {
-    "name": "book1"
-  }
+    "name": "book1",
+    "description": "Book1 project"
 }

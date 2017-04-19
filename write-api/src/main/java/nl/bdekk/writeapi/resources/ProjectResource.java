@@ -8,6 +8,7 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.List;
 
 @ApplicationScoped
@@ -20,17 +21,29 @@ public class ProjectResource {
     @GET
     @Produces("application/json")
     public Response getProjects() {
-        List<Project> projects = projectService.getProjects();
+        List<Project> projects = null;
+        try {
+            projects = projectService.getProjects();
+        } catch (IOException e) {
+            Error err = new Error();
+            err.setMessage(e.getMessage());
+            return Response.status(Response.Status.BAD_REQUEST).entity(err).build();
+        }
         return Response.ok(projects).build();
     }
 
     @POST
     @Consumes("application/json")
     @Produces("application/json")
-    public Response createProject() {
+    public Response createProject(final Project input) {
         Project project = null;
+
+        if(input == null) {
+            return Response.status(422).build();
+        }
+
         try {
-            project = projectService.createProject("project 1", "Description");
+            project = projectService.createProject(input.getName(), input.getDescription());
         } catch (Exception e) {
             Error err = new Error();
             err.setMessage(e.getMessage());

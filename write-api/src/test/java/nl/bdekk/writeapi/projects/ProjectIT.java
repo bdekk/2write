@@ -9,6 +9,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.core.IsEqual.equalTo;
 
 public class ProjectIT {
 
@@ -28,13 +29,29 @@ public class ProjectIT {
     @Ignore
     @Test
     public void getProject() {
-
+//        Response response = given()
+//                .contentType(ContentType.JSON)
+//                .log().all()
+//                .when()
+//                .get(TestUtils.URL + "/project/").andReturn();
+//
+//        int statusCode = response.getStatusCode();
+//        Assert.assertEquals(200, statusCode);
+//        Assert.assertNotEquals("", response.getBody().print());
     }
 
     @Ignore
     @Test
     public void getProjectByUser() {
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .when()
+                .get(TestUtils.URL + "/project").andReturn();
 
+        int statusCode = response.getStatusCode();
+        Assert.assertEquals(200, statusCode);
+        Assert.assertNotEquals("", response.getBody().print());
     }
 
     @Test
@@ -43,7 +60,7 @@ public class ProjectIT {
 
         given()
                 .contentType(ContentType.JSON)
-                .body(json.asText())
+                .body(json)
                 .when()
                 .post(TestUtils.URL + "/project")
                 .then()
@@ -58,7 +75,7 @@ public class ProjectIT {
         JsonNode json = TestUtils.readFileToJSON("valid-project.json");
         given()
                 .contentType(ContentType.JSON)
-                .body(json.asText())
+                .body(json)
                 .when()
                 .post(TestUtils.URL + "/project")
                 .then()
