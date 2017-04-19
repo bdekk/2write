@@ -22,6 +22,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 <link rel="import" href="write-icons.html">
 
 <dom-module id="write-app">
@@ -42,6 +43,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
       app-header paper-icon-button {
         --paper-icon-button-ink-color: var(--app-secondary-color);
+      }
+
+      #toast.info[type="info"] {
+        --paper-toast-background-color: var(--paper-indigo-500);
+      }
+      #toast[type="error"] {
+        --paper-toast-background-color: var(--paper-red-500);
+      }
+      #toast[type="confirm"] {
+        --paper-toast-background-color: var(--paper-green-500);
       }
 
       .navbar a {
@@ -91,6 +102,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         </iron-pages>
       </div>
     </app-header-layout>
+
+    <paper-toast class$="{{computeToastClass(event)}}" id="toast"></paper-toast>
   </template>
 
   <script>
@@ -120,6 +133,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         // Get root pattern for app-route, for more info about `rootPath` see:
         // https://www.polymer-project.org/2.0/docs/upgrade#urls-in-templates
         this.rootPattern = (new URL(this.rootPath)).pathname;
+      }
+
+      computeToastClass(event) {
+        console.log(event);
+      }
+      
+      ready() {
+        super.ready();
+        this.addEventListener('log', e => this._logListener(e));
+      }
+
+      _logListener(event) {       
+          this.$.toast.text = event.detail.message;
+          this.$.toast.setAttribute("type", event.detail.type)
+          this.$.toast.open();
       }
 
       _routePageChanged(page) {

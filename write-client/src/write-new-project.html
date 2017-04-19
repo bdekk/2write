@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="shared-styles.html">
@@ -19,11 +20,20 @@
       paper-button[dialog-dismiss] {
         color: #fff;
         background-color: var(--paper-red-500);
+        flex: 1;
+        margin-left:0;
       }
 
       paper-button[dialog-confirm] {
         color: #fff;
         background-color: var(--paper-green-500);
+        flex: 1;
+        margin-right:0;
+      }
+
+      paper-dialog .buttons {
+          display: flex;
+          padding: 8px;
       }
     </style>
 
@@ -37,11 +47,11 @@
 
     <paper-dialog id="newProject">
         <h2>New Project</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-          irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        <paper-input id="name" label="Book name"></paper-input>
+        <paper-textarea id="description" label="description"></paper-textarea>
         <div class="buttons">
-          <paper-button dialog-dismiss class="red">Cancel</paper-button>
-          <paper-button dialog-confirm autofocus class="green">Create</paper-button>
+          <paper-button dialog-dismiss on-click="close" class="red">Cancel</paper-button>
+          <paper-button dialog-confirm autofocus on-click="_newProject" class="green">Create</paper-button>
         </div>
       </paper-dialog>
   </template>
@@ -59,13 +69,32 @@
 
           open: {
               type: Boolean,
-              reflectOnAttribute: true
+              reflectOnAttribute: true,
+              observer: '_onOpen'
           }
         };
       }
 
-      _newProject(event) {
+      _onOpen(open) {
+          if(open) {
+              this.$.newProject.open();
+          } else {
+              this.$.newProject.dismiss();
+          }
+      }
 
+      _newProject(event) {
+        let name = this.$.name.value;
+        let description = this.$.description.value;
+          
+        this.dispatchEvent(new CustomEvent('newProject',  
+            {detail: {"project": {"name": name, "description": description}}}
+        ));
+      }
+
+      _close(event) {
+        this.$.name = "";
+        this.$.description.value = ""; 
       }
     }
 
