@@ -45,7 +45,7 @@
       last-response="{{projects}}">
     </iron-ajax>
 
-    <paper-dialog id="newProject">
+    <paper-dialog opened="{{open}}" id="newProject">
         <h2>New Project</h2>
         <paper-input id="name" label="Book name"></paper-input>
         <paper-textarea id="description" label="description"></paper-textarea>
@@ -70,17 +70,9 @@
           open: {
               type: Boolean,
               reflectOnAttribute: true,
-              observer: '_onOpen'
+              notify: true
           }
         };
-      }
-
-      _onOpen(open) {
-          if(open) {
-              this.$.newProject.open();
-          } else {
-              this.$.newProject.dismiss();
-          }
       }
 
       _newProject(event) {
@@ -95,6 +87,7 @@
       _close(event) {
         this.$.name = "";
         this.$.description.value = ""; 
+        this.open = false;
       }
     }
 

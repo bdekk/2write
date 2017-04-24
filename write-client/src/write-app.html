@@ -54,16 +54,46 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       #toast[type="confirm"] {
         --paper-toast-background-color: var(--paper-green-500);
       }
+/*
+      .navbar {
+          font-size: var(--app-toolbar-font-size, 20px);
+          align-items: var(--layout-center);
+          display: var(--layout-horizontal);
+      }*/
 
-      .navbar a {
+      .navbar paper-button {
+          display: inline-block;
+      }
+
+      app-toolbar:not([wide]) paper-button {
+          min-width:0;  
+      }
+
+      app-toolbar > paper-button {
+        padding: 0.4em 0.57em;
+      }
+
+      /*.navbar paper-button {
         display: inline-block;
         padding: 0 16px;
         color: #000;
         text-decoration: none;
         color: var(--app-secondary-color);
         line-height: 40px;
-      }
+      }*/
     </style>
+
+    <custom-style>
+      <style is="custom-style">
+         .navbar {
+          @apply --layout-horizontal;
+          @apply --layout-center;
+        }
+        .flex2child {
+          @apply --layout-flex-2;
+        }
+      </style>
+    </custom-style>
 
     <app-location route="{{route}}"></app-location>
     <app-route
@@ -76,15 +106,28 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     <app-header-layout fullbleed has-scrolling-region>
 
       <app-header slot="header" condenses reveals effects="waterfall">
-        <app-toolbar sticky>
+        <app-toolbar sticky wide$="[[wide]]" >
           <div main-title>2 Write</div>
-          <iron-selector selected="{{page}}" attr-for-selected="name" class="navbar" role="navigation">
+          <paper-button raised primary on-click="newProject">
+                <iron-icon hidden$="[[wide]]" icon="icons:create-new-folder"></iron-icon> 
+                <span hidden$="[[!wide]]">New project</span>
+          </paper-button>
+          <iron-selector selected="{{page}}" attr-for-selected="name" role="navigation" class="navbar">
             <!--<a name="view1" href="view1">View One</a>
             <a name="view2" href="view2">View Two</a>
             <a name="view3" href="view3">View Three</a>-->
-              <paper-button name="projects">Projects</paper-button>
-            <paper-button name="view2">View 2</paper-button>
-            <paper-button name="view3">View 3</paper-button>
+              <paper-button name="projects">
+                <iron-icon hidden$="[[wide]]" icon="icons:folder-open"></iron-icon> 
+                <span hidden$="[[!wide]]">Projects</span>
+              </paper-button>
+            <paper-button name="view2">
+               <iron-icon hidden$="[[wide]]" icon="icons:folder-open"></iron-icon> 
+                <span hidden$="[[!wide]]" >User</span>
+            </paper-button>
+            <paper-button name="view3">
+               <!--<iron-icon hidden$="[[wide]]" icon="icons:folder-open"></iron-icon> -->
+                <span hidden$="[[!wide]]">View 3</span>
+            </paper-button>
           </iron-selector>
         </app-toolbar>
       </app-header>
@@ -104,6 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     </app-header-layout>
 
     <paper-toast class$="{{computeToastClass(event)}}" id="toast"></paper-toast>
+    <iron-media-query query="(min-width: 600px)" query-matches="{{wide}}"></iron-media-query>
   </template>
 
   <script>
@@ -118,6 +162,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             reflectToAttribute: true,
             observer: '_pageChanged',
           },
+          wide: {
+            type: Boolean,
+            value: true
+          }
         };
       }
 
