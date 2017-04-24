@@ -39,7 +39,7 @@ public class ProjectDao {
 
     private Project convertRepoToProject(Repository repository, List<String> files) {
         Project project = new Project();
-        project.setName(repository.getDirectory().getParentFile().getName());
+        project.setName(repository.getDirectory().getName());
         project.setFiles(files);
         return project;
     }
