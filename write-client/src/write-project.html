@@ -59,7 +59,7 @@
                 </div>
             </div>
         </app-drawer>
-        <write-editor></write-editor>
+        <write-editor html={{selectedFile.content}}></write-editor>
     </app-drawer-layout>
     
   </template>
@@ -81,8 +81,12 @@
           },
 
           project: {
-            type: Array,
-            value: []
+            type: Object
+          },
+
+          selectedFile: {
+              type: Object,
+              value: {"content": "<h2>Hallo</h2>"}
           }
 
         };

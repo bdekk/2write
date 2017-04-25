@@ -15,8 +15,7 @@
       <button class="ql-bold">Bold</button>
       <button class="ql-italic">Italic</button>
     </div>
-    <div id="editor">
-    </div>
+    <div id="editor" inner-h-t-m-l="{{html}}"></div>
   </template>
 
 
@@ -26,9 +25,13 @@
 
       static get properties() {
         return {
-          content: {
+          html: {
             type: String,
-            value: []
+            notify: true
+          },
+          quill: {
+            type: Object,
+            value: null
           }
         };
       }
@@ -40,14 +43,16 @@
             modules: { toolbar: {container: this.$.toolbar} },
             theme: 'snow'
         });
-
+        
+        this.quill = quill;
         // quill.on('text-change', this._textChanged);
         // quill.getContents();
       }
 
-      // _textChanged(event) {
-      //     this.dispatchEvent(new CustomEvent('text-changed',  {detail: {event}}));
-      // }
+      _textChanged(event) {
+          // this.dispatchEvent(new CustomEvent('text-changed',  {detail: {event}}));
+          this.html = this.quill.getHTML();
+      }
     }
 
     window.customElements.define(Editor.is, Editor);
