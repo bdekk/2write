@@ -9,8 +9,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
@@ -139,6 +137,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             selected-attribute="activated"
             role="main">
           <write-projects name="projects" ></write-projects>
+          <write-project name="project" route={{subroute}}></write-project>
           <write-view2 name="view2"></write-view2>
           <write-view3 name="view3"></write-view3>
           <write-view404 name="view404"></write-view404>
@@ -190,6 +189,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       ready() {
         super.ready();
         this.addEventListener('log', e => this._logListener(e));
+        this.addEventListener('changePage', e => this._changePageListener(e));
       }
 
       _logListener(event) {       
@@ -197,6 +197,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           this.$.toast.setAttribute("type", event.detail.type)
           this.$.toast.open();
       }
+
+      _changePageListesner(event) {
+          this.page = event.detail.page;
+      }
+      
 
       _routePageChanged(page) {
         // Polymer 2.0 will call with `undefined` on initialization.

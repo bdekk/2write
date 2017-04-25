@@ -1,0 +1,55 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="quill-import.html">
+
+<dom-module id="write-editor">
+  <template>
+    <style>
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+    <div id="toolbar">
+      <button class="ql-bold">Bold</button>
+      <button class="ql-italic">Italic</button>
+    </div>
+    <div id="editor">
+    </div>
+  </template>
+
+
+  <script>
+    class Editor extends Polymer.Element {
+      static get is() { return 'write-editor'; }
+
+      static get properties() {
+        return {
+          content: {
+            type: String,
+            value: []
+          }
+        };
+      }
+
+      ready() {
+        super.ready();
+        var toolbarOptions = ['bold', 'italic', 'underline', 'strike']; 
+        var quill = new Quill(this.$.editor, {
+            modules: { toolbar: {container: this.$.toolbar} },
+            theme: 'snow'
+        });
+
+        // quill.on('text-change', this._textChanged);
+        // quill.getContents();
+      }
+
+      // _textChanged(event) {
+      //     this.dispatchEvent(new CustomEvent('text-changed',  {detail: {event}}));
+      // }
+    }
+
+    window.customElements.define(Editor.is, Editor);
+  </script>
+</dom-module>

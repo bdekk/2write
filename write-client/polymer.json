@@ -5,7 +5,9 @@
     "src/write-projects.html",
     "src/write-view2.html",
     "src/write-view3.html",
-    "src/write-view404.html"
+    "src/write-project.html",
+    "src/write-view404.html",
+    "src/write-editor.html"
   ],
   "sources": [
     "src/**/*",

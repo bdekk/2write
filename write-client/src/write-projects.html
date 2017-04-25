@@ -74,7 +74,6 @@
       on-response="_onProjectCreated">
     </iron-ajax>
 
-    <h2 class="title">All Projects</h2>
     <paper-input label="Search" id="search">
       <paper-icon-button suffix onclick="search()" icon="search" alt="search" title="search">
       </paper-icon-button>
@@ -126,8 +125,7 @@
           openDialog: {
             type: Boolean,
             value: false
-          }
-
+          },
         };
       }
 
@@ -187,6 +185,8 @@
       fileSelected(event) {
         console.log(event.model.__data);
         console.log(event.model.parentModel.__data);
+        let project = event.model.parentModel.__data;
+        this.dispatchEvent(new CustomEvent('changePage',  {detail: {"page": "project/" + project}, bubbles: true, composed: true}));
       }
     }
 

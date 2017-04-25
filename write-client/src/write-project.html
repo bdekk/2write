@@ -1,0 +1,124 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/paper-item/paper-item.html">
+<link rel="import" href="write-new-project.html">
+<link rel="import" href="shared-styles.html">
+<link rel="import" href="write-editor.html">
+
+<dom-module id="write-project">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      app-drawer {
+          top: 64px;
+          border-right: 1px solid #ddd;
+          background-color: #aaa;
+          --app-drawer-content-container: {
+            padding: 0px;
+            background-color: #eee;
+          };
+      }
+
+    </style>
+
+    <iron-ajax
+      id="getProjectAjax"
+      url="[[projectUrl]]"
+      handle-as="json"
+      content-type="application/json"
+      last-response="{{project}}">
+    </iron-ajax>
+
+    <app-drawer-layout>
+        <app-drawer slot="drawer">
+            <div style="height: 100%; overflow: auto;">
+                <div role="listbox">
+                    <paper-item on-click="_openFile">
+                        <div>Chapter1</div>
+                    </paper-item>
+                    <paper-item on-click="_openFile">
+                        <div>Chapter2</div>
+                    </paper-item>
+                    <template is="dom-repeat" items="[[project.files]]" as="file">
+                        <paper-item on-click="_openFile">
+                            <div>[[file]]</div>
+                        </paper-item>
+                    </template>
+                </div>
+            </div>
+        </app-drawer>
+        <write-editor></write-editor>
+    </app-drawer-layout>
+    
+  </template>
+
+  <script>
+    class Project extends Polymer.Element {
+      static get is() { return 'write-project'; }
+
+      static get properties() {
+        return {
+          activated: {
+            type: Boolean,
+            observer: '_pageActivated',
+          },
+          
+          projectUrl: {
+            type: String,
+            value: "http://localhost:8080/project"
+          },
+
+          project: {
+            type: Array,
+            value: []
+          }
+
+        };
+      }
+
+      constructor() {
+        super();
+      }
+
+      ready() {
+        super.ready();
+      }
+
+      _pageActivated(page) {
+        console.log(page);
+        this.$.getProjectAjax.generateRequest();
+
+      }
+
+      _onGetProject(event) {
+        console.log(event);
+      }
+
+      _onProjectError(event) {
+          let message = "get project error";
+          if(event.detail.error) {
+            message = event.detail.error.message;
+          }
+          this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "error", "message":  message}, bubbles: true, composed: true}));
+      }
+
+      _openFile(event) {
+        console.log(event);
+      }
+    }
+
+    window.customElements.define(Project.is, Project);
+  </script>
+</dom-module>

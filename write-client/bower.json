@@ -23,7 +23,8 @@
     "paper-dialog": "PolymerElements/paper-dialog#2.0-preview",
     "paper-input": "PolymerElements/paper-input#2.0-preview",
     "paper-toast": "PolymerElements/paper-toast#2.0-preview",
-    "paper-item": "PolymerElements/paper-item#2.0-preview"
+    "paper-item": "PolymerElements/paper-item#2.0-preview",
+    "quill": "^1.2.4"
   },
   "resolutions": {
     "polymer": "^2.0.0-rc.3"
