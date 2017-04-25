@@ -41,6 +41,13 @@
       last-response="{{project}}">
     </iron-ajax>
 
+    <iron-ajax
+      id="updateFileAjax"
+      handle-as="json"
+      method="PUT"
+      content-type="application/json">
+    </iron-ajax>
+
     <app-drawer-layout>
         <app-drawer slot="drawer">
             <div style="height: 100%; overflow: auto;">
@@ -59,7 +66,8 @@
                 </div>
             </div>
         </app-drawer>
-        <write-editor html={{selectedFile.content}}></write-editor>
+        <write-editor id="editor" content={{content}}></write-editor>
+        <paper-button primary raised on-click="_saveFile">Save</paper-button>
     </app-drawer-layout>
     
   </template>
@@ -85,8 +93,12 @@
           },
 
           selectedFile: {
-              type: Object,
-              value: {"content": "<h2>Hallo</h2>"}
+              type: Object
+          },
+
+          content: {
+              type: String,
+              value: "# Hallo"
           }
 
         };
@@ -108,6 +120,17 @@
 
       _onGetProject(event) {
         console.log(event);
+      }
+
+      _saveFile(event) {
+        if(!this.selectedFile) {
+          this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "error", "message":  "Could not detect selected file."}, bubbles: true, composed: true}));
+        } else {
+            this.$.updateFileAjax.url = this.projectUrl + "/1/" + this.selectedFile;
+            this.$.body = JSON.stringify({"content": this.selectedFile.content});
+            this.$.updateFileAjax.generateRequest();
+        }
+
       }
 
       _onProjectError(event) {

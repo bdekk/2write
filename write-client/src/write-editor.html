@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="quill-import.html">
+<link rel="import" href="html-markdown.html">
 
 <dom-module id="write-editor">
   <template>
@@ -15,6 +16,7 @@
       <button class="ql-bold">Bold</button>
       <button class="ql-italic">Italic</button>
     </div>
+    <html-markdown id="h2m"></html-markdown>
     <div id="editor" inner-h-t-m-l="{{html}}"></div>
   </template>
 
@@ -25,9 +27,10 @@
 
       static get properties() {
         return {
-          html: {
+          content: {
             type: String,
-            notify: true
+            notify: true,
+            reflectOnAttribute: true
           },
           quill: {
             type: Object,
@@ -45,13 +48,19 @@
         });
         
         this.quill = quill;
-        // quill.on('text-change', this._textChanged);
-        // quill.getContents();
+
+        this.html = this.$.h2m.toHTML(this.content);
+
+        this.quill.on('text-changed', this._textChanged);
+      }
+
+      getContent() {
+        return this.content;
       }
 
       _textChanged(event) {
           // this.dispatchEvent(new CustomEvent('text-changed',  {detail: {event}}));
-          this.html = this.quill.getHTML();
+          this.content = this.$.h2m.toMarkdown(this.html);
       }
     }
 

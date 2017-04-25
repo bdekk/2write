@@ -1,0 +1,53 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="tomarkdown-import.html">
+
+<dom-module id="html-markdown">
+  <template>
+    <style>
+    </style>
+  </template>
+
+
+  <script>
+    class HTMLMarkdown extends Polymer.Element {
+      static get is() { return 'html-markdown'; }
+
+      static get properties() {
+        return {
+          content: {
+            type: String,
+            notify: true,
+            observer: 'toHTML'
+          },
+          html: {
+            type: String,
+            notify: true,
+            observer: 'toMarkdown'
+          },
+          converter: {
+              type: Object
+          }
+        };
+      }
+
+      constructor() {
+          super();
+            this.converter = new showdown.Converter();
+      }
+
+      ready() {
+        super.ready();
+      }
+
+      toMarkdown(data) {
+        this.content = toMarkdown(data);
+      }
+
+      toHTML(data) {
+        this.html = this.converter.makeHtml(data);
+      }
+    }
+
+    window.customElements.define(HTMLMarkdown.is, HTMLMarkdown);
+  </script>
+</dom-module>
