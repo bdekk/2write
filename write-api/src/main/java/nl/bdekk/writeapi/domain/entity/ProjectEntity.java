@@ -1,6 +1,7 @@
 package nl.bdekk.writeapi.domain.entity;
 
 import javax.persistence.*;
+import java.nio.file.Path;
 
 @Entity
 @Table(name = "project")
@@ -8,7 +9,6 @@ import javax.persistence.*;
 public class ProjectEntity {
 
     public static final String FIND_ALL = "ProjectEntity.findAll";
-    public static final String FIND_BY_NAME = "ProjectEntity.findAll";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,6 +18,8 @@ public class ProjectEntity {
 
     private String description;
     private String title;
+
+    private String directory;
 
 //    @OneToMany
 //    @JoinColumn(name = "commiter")
@@ -54,5 +56,13 @@ public class ProjectEntity {
 
     public String getTitle() {
         return title;
+    }
+
+    public String getDirectory() {
+        return directory;
+    }
+
+    public void setDirectory(String directory) {
+        this.directory = directory;
     }
 }

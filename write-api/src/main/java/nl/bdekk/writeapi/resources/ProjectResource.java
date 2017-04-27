@@ -43,7 +43,7 @@ public class ProjectResource {
         }
 
         try {
-            project = projectService.createProject(input.getName(), input.getDescription());
+            project = projectService.createProject(input.getTitle(), input.getDescription());
         } catch (Exception e) {
             Error err = new Error();
             err.setMessage(e.getMessage());

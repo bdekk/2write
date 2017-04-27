@@ -10,7 +10,13 @@ import java.util.List;
 public class Project {
 
     @XmlElement
-    String name;
+    long id;
+
+    @XmlElement
+    String title;
+
+    @XmlElement
+    String description;
 
     @XmlElement
     List<String> files;
@@ -21,17 +27,6 @@ public class Project {
 
     @XmlElement
     int complete;
-
-    @XmlElement
-    String description;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
     public List<String> getFiles() {
         return files;
@@ -63,5 +58,21 @@ public class Project {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

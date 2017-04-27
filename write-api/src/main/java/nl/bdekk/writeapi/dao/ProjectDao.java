@@ -9,41 +9,38 @@ import org.eclipse.jgit.lib.Repository;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ProjectDao {
 
+    @Inject
     private RepositoryConnection con;
 
     @Inject
     private PersistenceHelper helper;
 
-    private List<Project> projects; // later replace this by db.
-
     public ProjectDao() {
-        con = new RepositoryConnection();
-        projects = new ArrayList<>();
     }
 
-    public List<Project> getProjects() throws IOException {
-//        List<Repository> repos = con.getRepos();
+    public List<Project> getProjects() {
         List<ProjectEntity> entities = getProjectEntities();
-//        List<Project> projects = repos.stream()
-//                .map(repository -> {
-//                    List<String> files = con.getFilesFromCommit(repository);
-//                    return convertRepoToProject(entity, repository, files);
-//                })
-//                .collect(Collectors.toList());
-
+        List<Project> projects = entities.stream()
+                .map(entity -> {
+                    Project project = null;
+                    try {
+                        Repository rep = con.getRepo(Paths.get(entity.getDirectory()));
+                        List<String> files = con.getFilesFromCommit(rep);
+                        project = convertRepoToProject(entity, files);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    return project;
+                }).collect(Collectors.toList());
         return projects;
     }
 
@@ -66,9 +63,11 @@ public class ProjectDao {
 //        }
 //    }
 
-    private Project convertRepoToProject(ProjectEntity entity, Repository repository, List<String> files) {
+    private Project convertRepoToProject(ProjectEntity entity, List<String> files) {
         Project project = new Project();
-        project.setName(repository.getDirectory().getName());
+        project.setTitle(entity.getTitle());
+        project.setId(entity.getId());
+        project.setDescription(entity.getDescription());
         project.setFiles(files);
         return project;
     }
@@ -80,9 +79,10 @@ public class ProjectDao {
         ProjectEntity entity = new ProjectEntity();
         entity.setDescription(description);
         entity.setTitle(title);
+        entity.setDescription(repository.getDirectory().getCanonicalPath());
         this.save(entity);
 
-        Project project = this.convertRepoToProject(entity, repository, files);
+        Project project = this.convertRepoToProject(entity, files);
 
         //add project entry to db.
 //        projects.add(project);

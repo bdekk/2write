@@ -18,6 +18,8 @@
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <version.hibernate>5.2.5.Final</version.hibernate>
+    <version.hibernate.javax.persistence>1.0.0.Final</version.hibernate.javax.persistence>
 
     <!-- liquibase postgres -->
     <version.postgres>9.4.1212</version.postgres>
@@ -99,6 +101,28 @@
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>jaxrs</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>org.hibernate.javax.persistence</groupId>
+      <artifactId>hibernate-jpa-2.1-api</artifactId>
+      <version>${version.hibernate.javax.persistence}</version>
+    </dependency>
+    <!--<dependency>-->
+      <!--<groupId>org.hibernate</groupId>-->
+      <!--<artifactId>hibernate-core</artifactId>-->
+      <!--<version>${version.hibernate}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.hibernate</groupId>-->
+      <!--<artifactId>hibernate-java8</artifactId>-->
+      <!--<version>${version.hibernate}</version>-->
+    <!--</dependency>-->
+    <!--<dependency>-->
+      <!--<groupId>org.hibernate</groupId>-->
+      <!--<artifactId>hibernate-jpamodelgen</artifactId>-->
+      <!--<version>${version.hibernate}</version>-->
+      <!--<scope>compile</scope>-->
+    <!--</dependency>-->
 
     <dependency>
       <groupId>org.postgresql</groupId>
