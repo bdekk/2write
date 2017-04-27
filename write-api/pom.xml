@@ -4,18 +4,19 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>nl.bdekk.write-api</groupId>
   <artifactId>write-api</artifactId>
-  <name>WildFly Swarm Example</name>
+  <name>2Write projects</name>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
   <properties>
     <version.wildfly.swarm>2017.4.0</version.wildfly.swarm>
     <version.junit>4.12</version.junit>
+    <version.slf4j>1.7.25</version.slf4j>
     <version.rest-assured>3.0.2</version.rest-assured>
-    <maven.compiler.source>1.8</maven.compiler.source>
-    <maven.compiler.target>1.8</maven.compiler.target>
     <failOnMissingWebXml>false</failOnMissingWebXml>
     <version.jackson>2.8.8</version.jackson>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
@@ -34,103 +35,19 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.2</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-      <plugin>
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>wildfly-swarm-plugin</artifactId>
         <version>${version.wildfly.swarm}</version>
         <executions>
           <execution>
-            <id>package</id>
-          </execution>
-          <execution>
-            <id>start</id>
-            <phase>none</phase>
-          </execution>
-          <execution>
-            <id>stop</id>
-            <phase>none</phase>
+            <goals>
+              <goal>package</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
-
-  <!-- jenkins -->
-  <!--<profiles>-->
-    <!--<profile>-->
-      <!--<id>docker</id>-->
-      <!--<build>-->
-        <!--<plugins>-->
-          <!--<plugin>-->
-            <!--<groupId>io.fabric8</groupId>-->
-            <!--<artifactId>docker-maven-plugin</artifactId>-->
-            <!--<configuration>-->
-              <!--<images>-->
-                <!--<image>-->
-                  <!--<name>${project.build.finalName}</name>-->
-                  <!--<run>-->
-                    <!--<ports>-->
-                      <!--<port>8080:8080</port>-->
-                    <!--</ports>-->
-                  <!--</run>-->
-                  <!--<build>-->
-                    <!--<from>java:openjdk-8-jdk</from>-->
-                    <!--<ports>-->
-                      <!--<port>8080</port>-->
-                    <!--</ports>-->
-                    <!--<assembly>-->
-                      <!--<basedir>/</basedir>-->
-                      <!--<inline>-->
-                        <!--<files>-->
-                          <!--<file>-->
-                            <!--<source>${project.build.directory}/${project.artifactId}-swarm.jar</source>-->
-                            <!--<outputDirectory>/opt</outputDirectory>-->
-                          <!--</file>-->
-                        <!--</files>-->
-                      <!--</inline>-->
-                    <!--</assembly>-->
-                    <!--<entryPoint>-->
-                      <!--<shell>java -jar /opt/${project.artifactId}-swarm.jar</shell>-->
-                    <!--</entryPoint>-->
-                  <!--</build>-->
-                <!--</image>-->
-              <!--</images>-->
-            <!--</configuration>-->
-            <!--<executions>-->
-              <!--<execution>-->
-                <!--<phase>package</phase>-->
-                <!--<goals>-->
-                  <!--<goal>build</goal>-->
-                <!--</goals>-->
-              <!--</execution>-->
-              <!--<execution>-->
-                <!--<id>pre-integration-test</id>-->
-                <!--<phase>pre-integration-test</phase>-->
-                <!--<goals>-->
-                  <!--<goal>start</goal>-->
-                <!--</goals>-->
-              <!--</execution>-->
-              <!--<execution>-->
-                <!--<id>post-integration-test</id>-->
-                <!--<phase>post-integration-test</phase>-->
-                <!--<goals>-->
-                  <!--<goal>stop</goal>-->
-                <!--</goals>-->
-              <!--</execution>-->
-            <!--</executions>-->
-          <!--</plugin>-->
-        <!--</plugins>-->
-      <!--</build>-->
-    <!--</profile>-->
-  <!--</profiles>-->
 
   <dependencies>
     <dependency>
@@ -160,8 +77,6 @@
       <groupId>org.wildfly.swarm</groupId>
       <artifactId>jaxrs</artifactId>
     </dependency>
-
-
 
     <!-- Core Library -->
       <dependency>
@@ -202,7 +117,6 @@
         <artifactId>junit</artifactId>
         <version>${version.junit}</version>
       </dependency>
-
   </dependencies>
 
   <repositories>
