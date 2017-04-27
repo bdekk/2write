@@ -1,4 +1,4 @@
-package nl.bdekk.writeapi.dto;
+package nl.bdekk.writeapi.domain;
 
 public class User {
     private String username;

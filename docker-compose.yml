@@ -11,3 +11,14 @@ services:
     volumes:
     - ~/git-server/keys:/git-server/keys
     - ~/git-server/repos:/git-server/repos
+  write-database:
+    image: postgres:9.6.2
+    container_name: write-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=write
+      - POSTGRES_PASSWORD=z9bDGHs3DTGUCvx9
+      - POSTGRES_DB=write
+    volumes:
+    - /var/lib/postgres/write-data:/var/lib/postgresql

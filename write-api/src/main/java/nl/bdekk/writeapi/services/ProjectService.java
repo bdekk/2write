@@ -1,7 +1,7 @@
 package nl.bdekk.writeapi.services;
 
 import nl.bdekk.writeapi.dao.ProjectDao;
-import nl.bdekk.writeapi.dto.Project;
+import nl.bdekk.writeapi.domain.Project;
 import org.eclipse.jgit.api.errors.GitAPIException;
 
 import javax.faces.bean.ApplicationScoped;

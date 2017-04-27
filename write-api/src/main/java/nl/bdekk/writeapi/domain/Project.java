@@ -1,5 +1,7 @@
-package nl.bdekk.writeapi.dto;
+package nl.bdekk.writeapi.domain;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
@@ -15,7 +17,7 @@ public class Project {
 
 
     @XmlElement
-    List<String> committers;
+    List<User> committers;
 
     @XmlElement
     int complete;
@@ -39,11 +41,11 @@ public class Project {
         this.files = files;
     }
 
-    public List<String> getCommitters() {
+    public List<User> getCommitters() {
         return committers;
     }
 
-    public void setCommitters(List<String> committers) {
+    public void setCommitters(List<User> committers) {
         this.committers = committers;
     }
 

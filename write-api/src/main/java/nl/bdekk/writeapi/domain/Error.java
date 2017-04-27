@@ -1,4 +1,4 @@
-package nl.bdekk.writeapi.dto;
+package nl.bdekk.writeapi.domain;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 

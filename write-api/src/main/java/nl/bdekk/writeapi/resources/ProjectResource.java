@@ -1,7 +1,7 @@
 package nl.bdekk.writeapi.resources;
 
-import nl.bdekk.writeapi.dto.Error;
-import nl.bdekk.writeapi.dto.Project;
+import nl.bdekk.writeapi.domain.Error;
+import nl.bdekk.writeapi.domain.Project;
 import nl.bdekk.writeapi.services.ProjectService;
 
 import javax.enterprise.context.ApplicationScoped;

@@ -1,15 +1,13 @@
 package nl.bdekk.writeapi.dao;
 
 import nl.bdekk.writeapi.database.RepositoryConnection;
-import nl.bdekk.writeapi.dto.Project;
+import nl.bdekk.writeapi.domain.Project;
 import org.eclipse.jgit.api.errors.GitAPIException;
-import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.Repository;
 
 import javax.faces.bean.ApplicationScoped;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
