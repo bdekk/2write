@@ -1,6 +1,5 @@
 package nl.bdekk.writeapi.dao;
 
-import nl.bdekk.writeapi.database.PersistenceHelper;
 import nl.bdekk.writeapi.database.RepositoryConnection;
 import nl.bdekk.writeapi.domain.Project;
 import nl.bdekk.writeapi.domain.entity.ProjectEntity;
@@ -9,6 +8,7 @@ import org.eclipse.jgit.lib.Repository;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Inject;
+import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -22,7 +22,7 @@ public class ProjectDao {
     private RepositoryConnection con;
 
     @Inject
-    private PersistenceHelper helper;
+    EntityManager manager;
 
     public ProjectDao() {
     }
@@ -45,7 +45,7 @@ public class ProjectDao {
     }
 
     private List<ProjectEntity> getProjectEntities() {
-        TypedQuery<ProjectEntity> query = helper.getEntityManager().createNamedQuery(ProjectEntity.FIND_ALL, ProjectEntity.class);
+        TypedQuery<ProjectEntity> query = manager.createNamedQuery(ProjectEntity.FIND_ALL, ProjectEntity.class);
         return query.getResultList();
     }
 
@@ -79,7 +79,7 @@ public class ProjectDao {
         ProjectEntity entity = new ProjectEntity();
         entity.setDescription(description);
         entity.setTitle(title);
-        entity.setDescription(repository.getDirectory().getCanonicalPath());
+        entity.setDirectory(repository.getDirectory().getCanonicalPath());
         this.save(entity);
 
         Project project = this.convertRepoToProject(entity, files);
@@ -91,9 +91,10 @@ public class ProjectDao {
     }
 
     private void save(Object object) {
-        helper.getEntityManager().getTransaction().begin();
-        helper.getEntityManager().persist(object);
-        helper.getEntityManager().getTransaction().commit();
+        manager.getTransaction().begin();
+        manager.persist(object);
+        manager.getTransaction().commit();
+
     }
 
     private Repository initializeRepo(String title) throws IOException, GitAPIException {

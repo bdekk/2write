@@ -1,7 +1,6 @@
 package nl.bdekk.writeapi.domain.entity;
 
 import javax.persistence.*;
-import java.nio.file.Path;
 
 @Entity
 @Table(name = "project")

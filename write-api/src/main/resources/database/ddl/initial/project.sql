@@ -1,12 +1,11 @@
---CREATE SEQUENCE project_id_seq;
---
---CREATE TABLE project
---(
---    id bigserial NOT NULL DEFAULT nextval('project_id_seq'),
---    dtype character varying(31) NOT NULL,
---    name varchar(255),
---    description varchar(255)
---    CONSTRAINT project_pkey PRIMARY KEY (id)
---);
---
---ALTER SEQUENCE project_id_seq OWNED BY project.id;
+CREATE SEQUENCE public.project_id_seq
+
+CREATE TABLE public.project
+(
+  id bigint NOT NULL DEFAULT nextval('project_id_seq'::regclass),
+  description character varying(255),
+  directory character varying(255),
+  name character varying(255),
+  title character varying(255),
+  CONSTRAINT project_pkey PRIMARY KEY (id)
+)
