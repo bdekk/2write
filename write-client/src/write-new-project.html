@@ -47,7 +47,7 @@
 
     <paper-dialog opened="{{open}}" id="newProject">
         <h2>New Project</h2>
-        <paper-input id="name" label="Book name"></paper-input>
+        <paper-input id="title" label="Book title"></paper-input>
         <paper-textarea id="description" label="description"></paper-textarea>
         <div class="buttons">
           <paper-button dialog-dismiss on-click="close" class="red">Cancel</paper-button>
@@ -76,16 +76,16 @@
       }
 
       _newProject(event) {
-        let name = this.$.name.value;
+        let title = this.$.title.value;
         let description = this.$.description.value;
           
         this.dispatchEvent(new CustomEvent('newProject',  
-            {detail: {"project": {"name": name, "description": description}}}
+            {detail: {"project": {"title": title, "description": description}}}
         ));
       }
 
       _close(event) {
-        this.$.name = "";
+        this.$.title = "";
         this.$.description.value = ""; 
         this.open = false;
       }

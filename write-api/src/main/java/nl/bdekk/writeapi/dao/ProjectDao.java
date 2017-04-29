@@ -127,9 +127,13 @@ public class ProjectDao {
         Repository bareRepo = con.createRepo(true, "", title);
         Repository repo = con.cloneRepo(bareRepo, "", title);
 
-        con.addFile(repo, "chapter1.md", "Enjoy writing".getBytes());
-        con.addFile(repo, "chapter2.md", "Enjoy writing".getBytes());
-        con.addFile(repo, "chapter3.md", "Enjoy writing".getBytes());
+        final String text = "# "+ title;
+        final String chapterOneText = "1. " + text;
+        final String chapterTwoText = "2. " + text;
+        final String chapterThreeText = "3. " + text;
+        con.addFile(repo, "chapter1.md", chapterOneText.getBytes());
+        con.addFile(repo, "chapter2.md", chapterTwoText.getBytes());
+        con.addFile(repo, "chapter3.md", chapterThreeText.getBytes());
         con.commit(repo, "Added initial chapters.", null);
 
         con.push(repo);

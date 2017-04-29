@@ -52,12 +52,6 @@
         <app-drawer slot="drawer">
             <div style="height: 100%; overflow: auto;">
                 <div role="listbox">
-                    <paper-item on-click="_openFile">
-                        <div>Chapter1</div>
-                    </paper-item>
-                    <paper-item on-click="_openFile">
-                        <div>Chapter2</div>
-                    </paper-item>
                     <template is="dom-repeat" items="[[project.files]]" as="file">
                         <paper-item on-click="_openFile">
                             <div>[[file]]</div>
@@ -93,12 +87,17 @@
           },
 
           selectedFile: {
-              type: Object
+              type: Object,
+              value: null
           },
 
           content: {
               type: String,
               value: "# Hallo"
+          },
+
+          route: {
+            type: Object
           }
 
         };
@@ -113,9 +112,11 @@
       }
 
       _pageActivated(page) {
-        console.log(page);
-        this.$.getProjectAjax.generateRequest();
-
+        if(this.route.path) {
+          let projectUrl = this.projectUrl + this.route.path;
+          this.$.getProjectAjax.url = projectUrl;
+          this.$.getProjectAjax.generateRequest();
+        }
       }
 
       _onGetProject(event) {

@@ -82,7 +82,7 @@
     <div class="flex-horizontal">
       <template is="dom-repeat" items="[[projects]]" as="project">
           <div class="card flex2child project">
-            <h3>{{project.name}}</h3>
+            <h3>{{project.title}}</h3>
             <p>{{project.description}}</p>
             <div role="listbox">
               <template is="dom-repeat" items="[[project.files]]" as="file">
@@ -185,8 +185,8 @@
       fileSelected(event) {
         console.log(event.model.__data);
         console.log(event.model.parentModel.__data);
-        let project = event.model.parentModel.__data;
-        this.dispatchEvent(new CustomEvent('changePage',  {detail: {"page": "project/" + project}, bubbles: true, composed: true}));
+        let model = event.model.parentModel.__data;
+        this.dispatchEvent(new CustomEvent('changePage',  {detail: {"page": "project/" + model.project.id}, bubbles: true, composed: true}));
       }
     }
 
