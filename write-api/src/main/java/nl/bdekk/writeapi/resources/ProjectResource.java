@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.util.List;
 
 @ApplicationScoped
-@Path("/")
+@Path("/project")
 public class ProjectResource {
 
     @Inject

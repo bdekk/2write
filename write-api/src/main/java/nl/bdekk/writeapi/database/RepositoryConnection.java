@@ -16,9 +16,11 @@ import org.eclipse.jgit.treewalk.TreeWalk;
 import javax.faces.bean.ApplicationScoped;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -101,12 +103,14 @@ public class RepositoryConnection {
         return git.getRepository();
     }
 
-    public List<String> getFilesFromCommit(Repository repository) {
+    public List<File> getFilesFromCommit(String rev, Repository repository) {
        // find the HEAD
-        List<String> items = new ArrayList<>();
+        List<File> items = new ArrayList<>();
         try {
             ObjectId lastCommitId = null;
-            lastCommitId = repository.resolve(Constants.HEAD);
+            // Makes it simpler to release the allocated resources in one go
+            ObjectReader reader = repository.newObjectReader();
+            lastCommitId = repository.resolve(rev);
             if(lastCommitId == null) {
                 // could not find a commit?
                 LOG.error("Could not find commit when retrieving files for repo " + repository.getDirectory().getAbsolutePath());
@@ -122,7 +126,10 @@ public class RepositoryConnection {
                     treeWalk.setPostOrderTraversal(false);
 
                     while (treeWalk.next()) {
-                        items.add(treeWalk.getPathString());
+                        Path temp = Files.createTempFile(treeWalk.getPathString(), "");
+                        byte[] data = reader.open(treeWalk.getObjectId(0)).getBytes();
+                        Files.write(temp, data);
+                        items.add(temp.toFile());
                     }
                 }
 
@@ -133,6 +140,57 @@ public class RepositoryConnection {
         }
         return items;
     }
+
+    public String getFileDataFromCommit(String rev, String path, Repository repository) {
+        ObjectReader reader = repository.newObjectReader();
+        String fileData = "";
+
+        try {
+            final ObjectId id = repository.resolve(rev);
+
+
+            // Get the commit object for that revision
+            RevWalk walk = new RevWalk(reader);
+            RevCommit commit = walk.parseCommit(id);
+
+            // Get the revision's file tree
+            RevTree tree = commit.getTree();
+            // .. and narrow it down to the single file's path
+            TreeWalk treewalk = TreeWalk.forPath(reader, path, tree);
+
+            if (treewalk != null) {
+                // use the blob id to read the file's data
+                byte[] data = reader.open(treewalk.getObjectId(0)).getBytes();
+                fileData = new String(data, "utf-8");
+            }
+        } catch(IOException e) {
+
+        } finally {
+            reader.close();
+        }
+        return fileData;
+    }
+
+//    try {
+//        // Get the commit object for that revision
+//        RevWalk walk = new RevWalk(reader);
+//        RevCommit commit = walk.parseCommit(id);
+//
+//        // Get the revision's file tree
+//        RevTree tree = commit.getTree();
+//        // .. and narrow it down to the single file's path
+//        TreeWalk treewalk = TreeWalk.forPath(reader, path, tree);
+//
+//        if (treewalk != null) {
+//            // use the blob id to read the file's data
+//            byte[] data = reader.open(treewalk.getObjectId(0)).getBytes();
+//            return new String(data, "utf-8");
+//        } else {
+//            return "";
+//        }
+//    } finally {
+//        reader.release();
+//    }
 
     public File addFile(Repository repository, String fileName, byte[] data) throws IOException, GitAPIException {
 

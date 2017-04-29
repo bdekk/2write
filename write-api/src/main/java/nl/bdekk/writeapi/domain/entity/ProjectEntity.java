@@ -1,6 +1,8 @@
 package nl.bdekk.writeapi.domain.entity;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NamedQueries({
@@ -16,6 +18,9 @@ public class ProjectEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @OneToMany(mappedBy = "project")
+    private List<FileEntity> fileEntities = new ArrayList<>();
 
     private String name;
 
@@ -67,5 +72,13 @@ public class ProjectEntity {
 
     public void setDirectory(String directory) {
         this.directory = directory;
+    }
+
+    public List<FileEntity> getFileEntities() {
+        return fileEntities;
+    }
+
+    public void setFileEntities(List<FileEntity> fileEntities) {
+        this.fileEntities = fileEntities;
     }
 }

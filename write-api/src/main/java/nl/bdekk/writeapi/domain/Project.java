@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
+import java.io.File;
 import java.util.List;
 
 @XmlRootElement
@@ -19,7 +20,7 @@ public class Project {
     String description;
 
     @XmlElement
-    List<String> files;
+    List<ProjectFile> files;
 
 
     @XmlElement
@@ -28,11 +29,11 @@ public class Project {
     @XmlElement
     int complete;
 
-    public List<String> getFiles() {
+    public List<ProjectFile> getFiles() {
         return files;
     }
 
-    public void setFiles(List<String> files) {
+    public void setFiles(List<ProjectFile> files) {
         this.files = files;
     }
 

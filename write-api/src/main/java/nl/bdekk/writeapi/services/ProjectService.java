@@ -16,8 +16,7 @@ public class ProjectService {
     private ProjectDao dao;
 
     public Project createProject(String title, String description) throws IOException, GitAPIException {
-        Project project = null;
-        project = dao.createProject(title, description);
+        Project project = dao.createProject(title, description);
         return project;
     }
 
