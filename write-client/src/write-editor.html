@@ -1,7 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="shared-styles.html">
-<link rel="import" href="quill-import.html">
 <link rel="import" href="html-markdown.html">
+<link rel="import" href="tiny-editor.html">
 
 <dom-module id="write-editor">
   <template>
@@ -12,12 +12,8 @@
         padding: 10px;
       }
     </style>
-    <div id="toolbar">
-      <button class="ql-bold">Bold</button>
-      <button class="ql-italic">Italic</button>
-    </div>
     <html-markdown id="h2m"></html-markdown>
-    <div id="editor" inner-h-t-m-l="{{html}}"></div>
+    <tiny-editor id="editor2" html="{{html}}"></tiny-editor>
   </template>
 
 
@@ -30,37 +26,24 @@
           content: {
             type: String,
             notify: true,
-            reflectOnAttribute: true
-          },
-          quill: {
-            type: Object,
-            value: null
+            observer: '_setContent'
           }
         };
       }
 
       ready() {
         super.ready();
-        var toolbarOptions = ['bold', 'italic', 'underline', 'strike']; 
-        var quill = new Quill(this.$.editor, {
-            modules: { toolbar: {container: this.$.toolbar} },
-            theme: 'snow'
-        });
         
-        this.quill = quill;
+      }
 
-        this.html = this.$.h2m.toHTML(this.content);
-
-        this.quill.on('text-changed', this._textChanged);
+      _setContent(data) {
+        let html = this.$.h2m.toHTML(data);
+        if(html) {
+        }
       }
 
       getContent() {
         return this.content;
-      }
-
-      _textChanged(event) {
-          // this.dispatchEvent(new CustomEvent('text-changed',  {detail: {event}}));
-          this.content = this.$.h2m.toMarkdown(this.html);
       }
     }
 

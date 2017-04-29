@@ -21,9 +21,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @ApplicationScoped
 public class RepositoryConnection {
@@ -103,9 +101,10 @@ public class RepositoryConnection {
         return git.getRepository();
     }
 
-    public List<File> getFilesFromCommit(String rev, Repository repository) {
+    public Map<String, String> getFilesFromCommit(String rev, Repository repository) {
        // find the HEAD
         List<File> items = new ArrayList<>();
+        Map<String, String> filesFromCommit = new HashMap<>();
         try {
             ObjectId lastCommitId = null;
             // Makes it simpler to release the allocated resources in one go
@@ -126,10 +125,10 @@ public class RepositoryConnection {
                     treeWalk.setPostOrderTraversal(false);
 
                     while (treeWalk.next()) {
-                        Path temp = Files.createTempFile(treeWalk.getPathString(), "");
-                        byte[] data = reader.open(treeWalk.getObjectId(0)).getBytes();
-                        Files.write(temp, data);
-                        items.add(temp.toFile());
+//                        Path temp = Files.createTempFile(treeWalk.getPathString(), "");
+//                        byte[] data = reader.open(treeWalk.getObjectId(0)).getBytes();
+//                        Files.write(temp, data);
+                        filesFromCommit.put(treeWalk.getNameString(), treeWalk.getPathString());
                     }
                 }
 
@@ -138,7 +137,7 @@ public class RepositoryConnection {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return items;
+        return filesFromCommit;
     }
 
     public String getFileDataFromCommit(String rev, String path, Repository repository) {

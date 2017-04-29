@@ -1,0 +1,201 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<dom-module id="tiny-editor">
+  <template>
+    <custom-style>
+        <style is="custom-style">
+            .toolbar {
+                @apply --layout-horizontal;
+                @apply --layout-center;
+            }
+        </style>
+    </custom-style>
+    <style>
+        :host {
+            display: block;
+
+            padding: 10px;
+        }
+
+        paper-button {
+            cursor: pointer;
+        }
+
+        #editor {
+            box-shadow: 0 0 2px #CCC;
+            min-height: 150px;
+            overflow: auto;
+            padding: 1em;
+            margin-top: 20px;
+            resize: vertical;
+            outline: none;
+        }
+
+        .toolbar {
+         text-align: center;
+        }
+
+        paper-button {
+            padding: 4px;
+            min-width:0;
+        }
+
+        .toolbar paper-button,
+        .fore-wrapper,
+        .back-wrapper {
+            background: #FFF;
+            font-family: 'Candal';
+            color: black;
+        }
+
+        .toolbar paper-button:hover,
+        .fore-wrapper:hover,
+        .back-wrapper:hover {
+            background: #f2f2f2;
+            border-color: #8c8c8c;
+        }
+
+        paper-button.palette-item {
+            border: 1px solid #CCC;
+        }
+
+        paper-button.palette-item:hover {
+            border: 1px solid #CCC;
+            box-shadow: 0 0 3px #333;
+        }
+
+        .toolbar .fore-palette,
+        .toolbar .back-palette {
+          display: none;
+        }
+
+        .fore-wrapper,
+        .back-wrapper {
+            display: inline-block;
+            cursor: pointer;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        .fore-wrapper:hover .fore-palette,
+        .back-wrapper:hover .back-palette {
+            display: block;
+            float: left;
+            position: absolute;
+            padding: 3px;
+            min-width: 160px;
+            background: #FFF;
+            border: 1px solid #DDD;
+            box-shadow: 0 0 5px #CCC;
+            height: 70px;
+        }
+
+        .fore-palette paper-button,
+        .back-palette paper-button {
+            background: #FFF;
+            margin-bottom: 2px;
+        }
+    </style>
+
+    <div class="toolbar">
+        <paper-button on-tap="_onToolbarClick" data-command='undo'><iron-icon icon="undo"></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='redo'><iron-icon icon="redo"></iron-icon></paper-button>
+        <!--<div class="fore-wrapper"><iron-icon icon='editor:format-color-text'></iron-icon>
+            <div class="fore-palette">
+                <template is="dom-repeat" items="[[colorPallette]]" as="color"> 
+                    <paper-button on-tap="_onToolbarClick" data-command="forecolor" data-value$="[[color]]" class="palette-item"></paper-button>
+                </template>
+            </div>
+        </div>
+        <div class="back-wrapper"><iron-icon icon='editor:format-color-fill'></iron-icon>
+            <div class="back-palette">
+                    <paper-button on-tap="_onToolbarClick" data-command="backcolor" data-value$="[[color]]" class="palette-item"></paper-button>
+            </div>
+        </div>-->
+        <paper-button on-tap="_onToolbarClick" data-command='bold'><iron-icon icon="editor:format-bold"></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='italic'><iron-icon icon="editor:format-italic"></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='underline'><iron-icon icon="editor:format-underlined"></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='strikeThrough'><iron-icon icon='editor:format-strikethrough'></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='justifyLeft'><iron-icon icon="editor:format-align-left"></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='justifyCenter'><iron-icon icon="editor:format-align-center"></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='justifyRight'><iron-icon icon="editor:format-align-right"></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='justifyFull'><iron-icon icon="editor:format-align-justify"></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='indent'><iron-icon icon='editor:format-indent-increase'></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='outdent'><iron-icon icon='editor:indent-decrease'></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='insertUnorderedList'><iron-icon icon='editor:format-list-bulleted'></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='insertOrderedList'><iron-icon icon='editor:format-list-numbered'></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='h1'>H1</paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='h2'>H2</paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='createlink'><iron-icon icon='editor:insert-link'></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='unlink'><iron-icon icon='editor:insert-link'></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='insertimage'><iron-icon icon='editor:attach-file'></iron-icon></paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='p'>P</paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='subscript'>s</paper-button>
+        <paper-button on-tap="_onToolbarClick" data-command='superscript'>S</paper-button>
+    </div>
+    <div id='editor' contenteditable>
+        {{html}}
+    </div>
+
+
+  </template>
+
+
+  <script>
+    class TinyEditor extends Polymer.Element {
+      static get is() { return 'tiny-editor'; }
+
+      static get properties() {
+        return {
+            html: {
+                type: String
+            },
+            colorPallette: {
+                type: Array,
+                value: ['000000', 'FF9966', '6699FF', '99FF66', 'CC0000', '00CC00', '0000CC', '333333', '0066FF', 'FFFFFF']
+            }
+        }
+      }
+
+      static get observers() {
+          return [
+          ]
+      }
+
+      ready() {
+        super.ready();
+      }
+
+      connectedCallback() {
+        super.connectedCallback();
+      }
+
+      _onToolbarClick(event) { 
+        let element = event.currentTarget; 
+        if(element) {
+            let command = element.getAttribute('data-command');
+
+            if (command == 'h1' || command == 'h2' || command == 'p') {
+                document.execCommand('formatBlock', false, command);
+            }
+            if (command == 'forecolor' || command == 'backcolor') {
+                document.execCommand(command, false, element.getAttribute('value'));
+            }
+            if (command == 'createlink' || command == 'insertimage') {
+                let textSelected = document.selection && document.selection.type == "Text";
+                if(textSelected) {
+                    document.execCommand(command, false, document.selection.createRange().htmlText);
+                }
+            } else { 
+                document.execCommand(command, false, null);
+            }
+        }
+      }
+    }
+
+    window.customElements.define(TinyEditor.is, TinyEditor);
+  </script>
+</dom-module>

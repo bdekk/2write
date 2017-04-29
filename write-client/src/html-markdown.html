@@ -41,10 +41,12 @@
 
       toMarkdown(data) {
         this.content = toMarkdown(data);
+        return this.content;
       }
 
       toHTML(data) {
         this.html = this.converter.makeHtml(data);
+        return this.html;
       }
     }
 

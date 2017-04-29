@@ -42,6 +42,14 @@
     </iron-ajax>
 
     <iron-ajax
+      id="getFileAjax"
+      handle-as="octet-stream"
+      method="GET"
+      on-response="_onGetFile"
+      content-type="application/octet-stream">
+    </iron-ajax>
+
+    <iron-ajax
       id="updateFileAjax"
       handle-as="json"
       method="PUT"
@@ -54,7 +62,7 @@
                 <div role="listbox">
                     <template is="dom-repeat" items="[[project.files]]" as="file">
                         <paper-item on-click="_openFile">
-                            <div>[[file]]</div>
+                            <div>[[file.name]]</div>
                         </paper-item>
                     </template>
                 </div>
@@ -82,6 +90,11 @@
             value: "http://localhost:8080/project"
           },
 
+          fileUrl: {
+            type: String,
+            value: "http://localhost:8080/file"
+          },
+
           project: {
             type: Object
           },
@@ -92,8 +105,7 @@
           },
 
           content: {
-              type: String,
-              value: "# Hallo"
+              type: String
           },
 
           route: {
@@ -143,7 +155,18 @@
       }
 
       _openFile(event) {
-        console.log(event);
+        let file = event.model.__data.file
+        this.$.getFileAjax.url = this.fileUrl + "/" + file.id;
+        this.$.getFileAjax.generateRequest();
+      }
+
+      _onGetFile(event) {
+          let data = event.detail.response;
+          if(data) {
+            this.set('content', data);
+          } else {
+           this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "error", "message":  "Could not retrieve file data."}, bubbles: true, composed: true}));
+          }
       }
     }
 

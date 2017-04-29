@@ -16,7 +16,9 @@ import javax.persistence.TypedQuery;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -100,11 +102,11 @@ public class ProjectDao {
         return projectFiles;
     }
 
-    private List<FileEntity> convertFileToFileEntity(List<File> files, ProjectEntity entity) {
-        List<FileEntity> fileEntities = files.stream().map(file -> {
+    private List<FileEntity> convertFileToFileEntity(Map<String, String> files, ProjectEntity entity) {
+        List<FileEntity> fileEntities = files.entrySet().stream().map(file -> {
             FileEntity fe = new FileEntity();
-            fe.setName(file.getName());
-            fe.setPath(file.getAbsolutePath());
+            fe.setName(file.getKey());
+            fe.setPath(file.getValue());
             fe.setProject(entity);
             return fe;
         }).collect(Collectors.toList());
@@ -113,7 +115,7 @@ public class ProjectDao {
 
     public Project createProject(String title, String description) throws IOException, GitAPIException {
         Repository repository = this.initializeRepo(title);
-        List<File> files = con.getFilesFromCommit("HEAD", repository);
+        Map<String, String> files = con.getFilesFromCommit("HEAD", repository);
 
         // save project.
         ProjectEntity entity = new ProjectEntity();
