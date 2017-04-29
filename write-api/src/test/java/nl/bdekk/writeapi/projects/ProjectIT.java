@@ -29,15 +29,16 @@ public class ProjectIT {
     @Ignore
     @Test
     public void getProject() {
-//        Response response = given()
-//                .contentType(ContentType.JSON)
-//                .log().all()
-//                .when()
-//                .get(TestUtils.URL + "/project/").andReturn();
-//
-//        int statusCode = response.getStatusCode();
-//        Assert.assertEquals(200, statusCode);
-//        Assert.assertNotEquals("", response.getBody().print());
+        long projectId = 1;
+
+        Response response = given()
+                .contentType(ContentType.JSON)
+                .log().all()
+                .when()
+                .get(TestUtils.URL + "/project/" + projectId).andReturn();
+
+        int statusCode = response.getStatusCode();
+        Assert.assertEquals(200, statusCode);
     }
 
     @Ignore

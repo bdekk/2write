@@ -24,4 +24,8 @@ public class ProjectService {
     public List<Project> getProjects() throws IOException {
         return dao.getProjects();
     }
+
+    public Project getProject(long id) {
+        return dao.getProject(id);
+    }
 }

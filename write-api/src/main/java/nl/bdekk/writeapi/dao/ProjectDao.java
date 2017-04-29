@@ -9,10 +9,12 @@ import org.eclipse.jgit.lib.Repository;
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -44,9 +46,33 @@ public class ProjectDao {
         return projects;
     }
 
+    public Project getProject(long id) {
+        Project project = this.getProjectEntityById(id).map(entity -> {
+            Repository rep = null;
+            try {
+                rep = con.getRepo(Paths.get(entity.getDirectory()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            List<String> files = con.getFilesFromCommit(rep);
+            return this.convertRepoToProject(entity, files);
+        }).orElse(null);
+        return project;
+    }
+
     private List<ProjectEntity> getProjectEntities() {
         TypedQuery<ProjectEntity> query = manager.createNamedQuery(ProjectEntity.FIND_ALL, ProjectEntity.class);
         return query.getResultList();
+    }
+
+    private Optional<ProjectEntity> getProjectEntityById(long id) {
+        TypedQuery<ProjectEntity> query = manager.createNamedQuery(ProjectEntity.FIND_BY_ID, ProjectEntity.class);
+        query = query.setParameter("id", id);
+        try {
+            return Optional.of(query.getSingleResult());
+        } catch (NoResultException nre) {
+            return Optional.empty();
+        }
     }
 
 //    private ProjectEntity getProjectEntity(String name) {
@@ -90,7 +116,7 @@ public class ProjectDao {
         return project;
     }
 
-    private void save(Object object) {
+    private void save(ProjectEntity object) {
         manager.getTransaction().begin();
         manager.persist(object);
         manager.getTransaction().commit();

@@ -3,11 +3,15 @@ package nl.bdekk.writeapi.domain.entity;
 import javax.persistence.*;
 
 @Entity
+@NamedQueries({
+        @NamedQuery(name=ProjectEntity.FIND_ALL, query="SELECT p FROM ProjectEntity p"),
+        @NamedQuery(name = ProjectEntity.FIND_BY_ID, query = "SELECT c FROM ProjectEntity c WHERE c.id = :id")
+})
 @Table(name = "project")
-@NamedQuery(name=ProjectEntity.FIND_ALL, query="SELECT p FROM ProjectEntity p")
 public class ProjectEntity {
 
     public static final String FIND_ALL = "ProjectEntity.findAll";
+    public static final String FIND_BY_ID = "ProjectEntity.findById";
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

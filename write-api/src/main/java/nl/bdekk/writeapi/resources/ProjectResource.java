@@ -32,6 +32,18 @@ public class ProjectResource {
         return Response.ok(projects).build();
     }
 
+    @GET
+    @Path("{projectId}")
+    @Produces("application/json")
+    public Response getProject(@PathParam("projectId") long projectId) {
+        Project project = projectService.getProject(projectId);
+
+        if(project == null) {
+            return  Response.status(404).build();
+        }
+        return Response.ok(project).build();
+    }
+
     @POST
     @Consumes("application/json")
     @Produces("application/json")
