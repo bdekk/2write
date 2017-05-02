@@ -136,8 +136,9 @@
         <paper-button on-tap="_onToolbarClick" data-command='subscript'>s</paper-button>
         <paper-button on-tap="_onToolbarClick" data-command='superscript'>S</paper-button>
     </div>
-    <div id='editor' contenteditable>
-        {{html}}
+        <div id='editor' contenteditable="true" inner-h-t-m-l="{{html}}">
+            <!--[[html]]-->
+        </div>
     </div>
 
 
@@ -151,7 +152,10 @@
       static get properties() {
         return {
             html: {
-                type: String
+                type: String,
+                value: "",
+                notify: true,
+                reflectToAttribute: true
             },
             colorPallette: {
                 type: Array,
@@ -167,10 +171,25 @@
 
       ready() {
         super.ready();
+        // this.setHTML(this.getHTML());
+
+        // this.el.setAttribute('contenteditable', true);
+
+        this.$.editor.addEventListener('input', function () {
+            this.html = this.$.editor.innerHTML;
+        }.bind(this), false);
       }
 
       connectedCallback() {
         super.connectedCallback();
+      }
+
+      _setHTML(data) {
+            this.set('html', data);
+      }
+
+      update(event) {
+          console.log(event);
       }
 
       _onToolbarClick(event) { 

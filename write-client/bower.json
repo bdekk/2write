@@ -24,10 +24,8 @@
     "paper-input": "PolymerElements/paper-input#2.0-preview",
     "paper-toast": "PolymerElements/paper-toast#2.0-preview",
     "paper-item": "PolymerElements/paper-item#2.0-preview",
-    "quill": "^1.2.4",
     "to-markdown": "^3.0.4",
     "showdown": "^1.6.4",
-    "polymer-quill": "^1.2.3",
     "tinymce": "^4.5.7"
   },
   "resolutions": {

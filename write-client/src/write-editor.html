@@ -2,6 +2,7 @@
 <link rel="import" href="shared-styles.html">
 <link rel="import" href="html-markdown.html">
 <link rel="import" href="tiny-editor.html">
+<!--<link rel="import" href="quill-import.html">-->
 
 <dom-module id="write-editor">
   <template>
@@ -14,6 +15,7 @@
     </style>
     <html-markdown id="h2m"></html-markdown>
     <tiny-editor id="editor2" html="{{html}}"></tiny-editor>
+
   </template>
 
 
@@ -26,19 +28,35 @@
           content: {
             type: String,
             notify: true,
+            reflectAtAttribute: true,
             observer: '_setContent'
+          },
+          html: {
+            type: String,
+            observer: '_setHTML'
           }
         };
       }
 
       ready() {
         super.ready();
-        
+      }
+
+      updateValue(event) {
+        this.value = this.scribe.getContent();
       }
 
       _setContent(data) {
         let html = this.$.h2m.toHTML(data);
         if(html) {
+          this.set('html', html);
+        }
+      }
+
+      _setHTML(data) {
+        let content = this.$.h2m.toMarkdown(data);
+        if(content) {
+          this.set('content', content);
         }
       }
 
