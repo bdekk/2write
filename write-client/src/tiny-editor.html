@@ -136,9 +136,7 @@
         <paper-button on-tap="_onToolbarClick" data-command='subscript'>s</paper-button>
         <paper-button on-tap="_onToolbarClick" data-command='superscript'>S</paper-button>
     </div>
-        <div id='editor' contenteditable="true" inner-h-t-m-l="{{html}}">
-            <!--[[html]]-->
-        </div>
+        <div id='editor' contenteditable="true"></div>
     </div>
 
 
@@ -155,7 +153,8 @@
                 type: String,
                 value: "",
                 notify: true,
-                reflectToAttribute: true
+                reflectToAttribute: true,
+                observer: '_setHTML'
             },
             colorPallette: {
                 type: Array,
@@ -171,21 +170,18 @@
 
       ready() {
         super.ready();
-        // this.setHTML(this.getHTML());
-
-        // this.el.setAttribute('contenteditable', true);
-
         this.$.editor.addEventListener('input', function () {
             this.html = this.$.editor.innerHTML;
         }.bind(this), false);
       }
 
-      connectedCallback() {
-        super.connectedCallback();
+      _setHTML(data) {
+        this.$.editor.focus();
+        this.insertHtmlAfterSelection(data); 
       }
 
-      _setHTML(data) {
-            this.set('html', data);
+      connectedCallback() {
+        super.connectedCallback();
       }
 
       update(event) {
@@ -211,6 +207,42 @@
             } else { 
                 document.execCommand(command, false, null);
             }
+        }
+      }
+
+      insertHtmlAfterSelection(html) {
+        var sel, range, expandedSelRange, node;
+        if (this.shadowRoot.getSelection) {
+            sel = this.shadowRoot.getSelection;
+            if (sel.getRangeAt && sel.rangeCount) {
+                range = this.shadowRoot.getSelection.getRangeAt(0);
+                expandedSelRange = range.cloneRange();
+                range.collapse(false);
+
+                // Range.createContextualFragment() would be useful here but is
+                // non-standard and not supported in all browsers (IE9, for one)
+                var el = document.createElement("div");
+                el.innerHTML = html;
+                var frag = document.createDocumentFragment(), node, lastNode;
+                while ( (node = el.firstChild) ) {
+                    lastNode = frag.appendChild(node);
+                }
+                range.insertNode(frag);
+
+                // Preserve the selection
+                if (lastNode) {
+                    expandedSelRange.setEndAfter(lastNode);
+                    sel.removeAllRanges();
+                    sel.addRange(expandedSelRange);
+                }
+            }
+        } else if (document.selection && document.selection.createRange) {
+            range = document.selection.createRange();
+            expandedSelRange = range.duplicate();
+            range.collapse(false);
+            range.pasteHTML(html);
+            expandedSelRange.setEndPoint("EndToEnd", range);
+            expandedSelRange.select();
         }
       }
     }

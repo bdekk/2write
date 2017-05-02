@@ -3,8 +3,10 @@
 <link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
@@ -31,7 +33,19 @@
           };
       }
 
+      app-toolbar.drawer-toolbar {
+        border-bottom: 1px solid #ddd;
+      }
+
     </style>
+
+    <custom-style>
+      <style is="custom-style">
+         app-drawer {
+          @apply --layout-vertical;
+        }
+      </style>
+    </custom-style>
 
     <iron-ajax
       id="getProjectAjax"
@@ -58,6 +72,9 @@
 
     <app-drawer-layout>
         <app-drawer slot="drawer">
+            <app-toolbar class="drawer-toolbar">
+              <paper-icon-button icon="add" title="add"></paper-icon-button>
+            </app-toolbar>
             <div style="height: 100%; overflow: auto;">
                 <div role="listbox">
                     <template is="dom-repeat" items="[[project.files]]" as="file">
@@ -68,7 +85,7 @@
                 </div>
             </div>
         </app-drawer>
-        <write-editor id="editor" content={{content}}></write-editor>
+        <write-editor id="editor" content={{selectedFile.content}}></write-editor>
         <paper-button primary raised on-click="_saveFile">Save</paper-button>
     </app-drawer-layout>
     
@@ -101,11 +118,7 @@
 
           selectedFile: {
               type: Object,
-              value: null
-          },
-
-          content: {
-              type: String
+              value: {}
           },
 
           route: {
@@ -139,7 +152,7 @@
         if(!this.selectedFile) {
           this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "error", "message":  "Could not detect selected file."}, bubbles: true, composed: true}));
         } else {
-            this.$.updateFileAjax.url = this.projectUrl + "/1/" + this.selectedFile;
+            this.$.updateFileAjax.url = this.fileUrl + "/" + this.selectedFile.id;
             this.$.body = JSON.stringify({"content": this.selectedFile.content});
             this.$.updateFileAjax.generateRequest();
         }
@@ -157,13 +170,14 @@
       _openFile(event) {
         let file = event.model.__data.file
         this.$.getFileAjax.url = this.fileUrl + "/" + file.id;
+        this.selectedFile.id = file.id;
         this.$.getFileAjax.generateRequest();
       }
 
       _onGetFile(event) {
           let data = event.detail.response;
           if(data) {
-            this.set('content', data);
+            this.set('selectedFile.content', data);
           } else {
            this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "error", "message":  "Could not retrieve file data."}, bubbles: true, composed: true}));
           }

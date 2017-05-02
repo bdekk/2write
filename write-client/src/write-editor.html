@@ -41,11 +41,7 @@
       ready() {
         super.ready();
       }
-
-      updateValue(event) {
-        this.value = this.scribe.getContent();
-      }
-
+      
       _setContent(data) {
         let html = this.$.h2m.toHTML(data);
         if(html) {
