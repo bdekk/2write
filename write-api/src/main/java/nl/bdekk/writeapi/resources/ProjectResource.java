@@ -7,6 +7,7 @@ import nl.bdekk.writeapi.services.ProjectService;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
@@ -19,7 +20,7 @@ public class ProjectResource {
     private ProjectService projectService;
 
     @GET
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getProjects() {
         List<Project> projects = null;
         try {
@@ -34,7 +35,7 @@ public class ProjectResource {
 
     @GET
     @Path("{projectId}")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getProject(@PathParam("projectId") long projectId) {
         Project project = projectService.getProject(projectId);
 
@@ -45,8 +46,8 @@ public class ProjectResource {
     }
 
     @POST
-    @Consumes("application/json")
-    @Produces("application/json")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
     public Response createProject(final Project input) {
         Project project = null;
 

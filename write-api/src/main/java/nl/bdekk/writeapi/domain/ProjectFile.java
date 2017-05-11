@@ -12,9 +12,11 @@ public class ProjectFile {
     @XmlElement
     String name;
 
-
     @XmlElement
     String path;
+
+    @XmlElement
+    String content;
 
 
     public long getId() {
@@ -40,4 +42,13 @@ public class ProjectFile {
     public void setPath(String path) {
         this.path = path;
     }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
 }

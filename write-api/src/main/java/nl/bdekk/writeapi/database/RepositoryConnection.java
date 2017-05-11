@@ -123,6 +123,16 @@ public class RepositoryConnection {
                     treeWalk.addTree(tree);
                     treeWalk.setRecursive(false);
                     treeWalk.setPostOrderTraversal(false);
+                    while (treeWalk.next()) {
+                        if (treeWalk.isSubtree()) {
+                            System.out.println("dir: " + treeWalk.getPathString());
+                            treeWalk.enterSubtree();
+                        } else {
+                            String name = treeWalk.getNameString();
+                            String path = treeWalk.getPathString().replace(name, "");
+                            filesFromCommit.put(name, path);
+                        }
+                    }
 
                     while (treeWalk.next()) {
 //                        Path temp = Files.createTempFile(treeWalk.getPathString(), "");
@@ -140,7 +150,7 @@ public class RepositoryConnection {
         return filesFromCommit;
     }
 
-    public String getFileDataFromCommit(String rev, String path, Repository repository) {
+    public String getFileDataFromCommit(String rev, String path, String name, Repository repository) {
         ObjectReader reader = repository.newObjectReader();
         String fileData = "";
 
@@ -155,7 +165,8 @@ public class RepositoryConnection {
             // Get the revision's file tree
             RevTree tree = commit.getTree();
             // .. and narrow it down to the single file's path
-            TreeWalk treewalk = TreeWalk.forPath(reader, path, tree);
+            Path filePath = Paths.get(path, name);
+            TreeWalk treewalk = TreeWalk.forPath(reader, filePath.toString(), tree);
 
             if (treewalk != null) {
                 // use the blob id to read the file's data
@@ -192,9 +203,13 @@ public class RepositoryConnection {
 //    }
 
     public File addFile(Repository repository, String fileName, byte[] data) throws IOException, GitAPIException {
+        return addFile(repository, fileName, "", data);
+    }
 
+    public File addFile(Repository repository, String fileName, String filePath, byte[] data) throws IOException, GitAPIException {
+        Path path = Paths.get(repository.getDirectory().getParent(), filePath);
         try (Git git = new Git(repository)) {
-            File file = new File(repository.getDirectory().getParent(), fileName);
+            File file = new File(path.toString(), fileName);
             if (!file.createNewFile()) {
                 throw new IOException("Could not create file " + file);
             }

@@ -26,7 +26,8 @@
     "paper-item": "PolymerElements/paper-item#2.0-preview",
     "to-markdown": "^3.0.4",
     "showdown": "^1.6.4",
-    "tinymce": "^4.5.7"
+    "tinymce": "^4.5.7",
+    "paper-listbox": "PolymerElements/paper-listbox#2.0-preview"
   },
   "resolutions": {
     "polymer": "^2.0.0-rc.3"
