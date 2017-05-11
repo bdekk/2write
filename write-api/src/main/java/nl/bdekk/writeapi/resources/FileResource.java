@@ -31,9 +31,17 @@ public class FileResource {
     }
 
     @PUT
-    @Consumes("application/json")
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
     @Produces("application/json")
     public Response updateFile(@PathParam("fileId") long fileId) {
-        return Response.ok().build();
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
+    }
+
+
+    @POST
+    @Consumes("application/json")
+    @Produces("application/json")
+    public Response addFile(@PathParam("fileId") long fileId) {
+        return Response.status(Response.Status.NOT_IMPLEMENTED).build();
     }
 }
