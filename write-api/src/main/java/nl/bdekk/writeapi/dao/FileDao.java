@@ -54,6 +54,7 @@ public class FileDao {
 
     public boolean updateFile(long fileId, ProjectFile updatedFile) {
         Optional<FileEntity> fileOpt = getFileEntity(fileId);
+        ObjectId commit = null;
         if(fileOpt.isPresent()) {
             FileEntity file = fileOpt.get();
             String projectDirectory = file.getProject().getDirectory();
@@ -61,18 +62,18 @@ public class FileDao {
             try {
                 Repository repository = con.getRepo(Paths.get(projectDirectory));
                 con.addFile(repository, file.getName(), path, updatedFile.getContent().getBytes());
-                ObjectId commit = con.commit(repository, "updated file" + file.getName(), null);
+                commit = con.commit(repository, "updated file" + file.getName(), null);
                 con.push(repository);
             } catch (IOException | GitAPIException e) {
                 e.printStackTrace();
             }
 
             manager.getTransaction().begin();
-            if (!updatedFile.getName().equals(updatedFile.getName())) {
+            if (updatedFile.getName() != null && !file.getName().equals(updatedFile.getName())) {
                 file.setName(updatedFile.getName());
             }
             manager.getTransaction().commit();
         }
-        return true;
+        return commit != null;
     }
 }

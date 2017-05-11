@@ -210,7 +210,7 @@ public class RepositoryConnection {
         Path path = Paths.get(repository.getDirectory().getParent(), filePath);
         try (Git git = new Git(repository)) {
             File file = new File(path.toString(), fileName);
-            if (!file.createNewFile()) {
+            if (!file.exists() && !file.createNewFile()) {
                 throw new IOException("Could not create file " + file);
             }
             Files.write(file.toPath(), data);
