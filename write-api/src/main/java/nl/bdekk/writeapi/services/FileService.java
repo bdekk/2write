@@ -2,9 +2,11 @@ package nl.bdekk.writeapi.services;
 
 import nl.bdekk.writeapi.dao.FileDao;
 import nl.bdekk.writeapi.domain.ProjectFile;
+import org.eclipse.jgit.api.errors.GitAPIException;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.inject.Inject;
+import java.io.IOException;
 
 @ApplicationScoped
 public class FileService {
@@ -20,7 +22,7 @@ public class FileService {
         return dao.updateFile(fileId, file);
     }
 
-    public ProjectFile createFile(long projectId, String name) {
+    public ProjectFile createFile(long projectId, String name) throws IOException, GitAPIException {
         return dao.createFile(projectId, name);
     }
 }

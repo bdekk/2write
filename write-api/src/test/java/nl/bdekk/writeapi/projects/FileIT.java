@@ -19,7 +19,7 @@ public class FileIT {
                 .contentType(ContentType.JSON)
                 .log().all()
                 .when()
-                .get(TestUtils.URL + "/project").andReturn();
+                .get(TestUtils.URL + "/project/1/file/1").andReturn();
 
         int statusCode = response.getStatusCode();
         Assert.assertEquals(200, statusCode);
@@ -34,7 +34,7 @@ public class FileIT {
                 .contentType(ContentType.JSON)
                 .body(json)
                 .when()
-                .put(TestUtils.URL + "/file/1")
+                .put(TestUtils.URL + "/project/1/file/1")
                 .then()
                 .statusCode(200)
                 .body("content", equalTo("Content"), "name", equalTo("file1"));
@@ -49,7 +49,7 @@ public class FileIT {
                 .contentType(ContentType.JSON)
                 .body(json)
                 .when()
-                .post(TestUtils.URL + "/file")
+                .post(TestUtils.URL + "/project/1/file")
                 .then()
                 .statusCode(201)
                 .body("content", equalTo("Content"), "name", equalTo("file1"));
