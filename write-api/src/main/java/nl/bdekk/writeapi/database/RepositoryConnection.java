@@ -101,6 +101,30 @@ public class RepositoryConnection {
         return git.getRepository();
     }
 
+    /**
+     * Gets a  certain file from the repository.
+     * Note: Can be refactored. Now traverses the whole tree.
+     * @param rev
+     * @param repository
+     * @param fileName
+     * @param directory
+     * @return
+     */
+    public Optional<Map.Entry<String, String>> getFileFromCommit(String rev, Repository repository, String fileName, String directory) {
+        Map<String, String> files = getFilesFromCommit(rev, repository);
+        Optional<Map.Entry<String, String>> file = files.entrySet()
+                .stream()
+                .filter(fileFound -> fileFound.getKey().equals(fileName) && fileFound.getValue().equals(directory))
+                .findFirst();
+        return file;
+    }
+
+    /**
+     * Gets all files from a repository.
+     * @param rev
+     * @param repository
+     * @return
+     */
     public Map<String, String> getFilesFromCommit(String rev, Repository repository) {
        // find the HEAD
         List<File> items = new ArrayList<>();
@@ -114,7 +138,6 @@ public class RepositoryConnection {
                 // could not find a commit?
                 LOG.error("Could not find commit when retrieving files for repo " + repository.getDirectory().getAbsolutePath());
             } else {
-
                 RevWalk revWalk = new RevWalk(repository);
                 RevCommit commit = revWalk.parseCommit(lastCommitId);
                 // and using commit's tree find the path
@@ -125,20 +148,12 @@ public class RepositoryConnection {
                     treeWalk.setPostOrderTraversal(false);
                     while (treeWalk.next()) {
                         if (treeWalk.isSubtree()) {
-                            System.out.println("dir: " + treeWalk.getPathString());
                             treeWalk.enterSubtree();
                         } else {
                             String name = treeWalk.getNameString();
                             String path = treeWalk.getPathString().replace(name, "");
                             filesFromCommit.put(name, path);
                         }
-                    }
-
-                    while (treeWalk.next()) {
-//                        Path temp = Files.createTempFile(treeWalk.getPathString(), "");
-//                        byte[] data = reader.open(treeWalk.getObjectId(0)).getBytes();
-//                        Files.write(temp, data);
-                        filesFromCommit.put(treeWalk.getNameString(), treeWalk.getPathString());
                     }
                 }
 

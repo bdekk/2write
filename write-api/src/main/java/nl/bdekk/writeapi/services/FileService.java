@@ -19,4 +19,8 @@ public class FileService {
     public boolean updateFile(long fileId, ProjectFile file) {
         return dao.updateFile(fileId, file);
     }
+
+    public ProjectFile createFile(long projectId, String name) {
+        return dao.createFile(projectId, name);
+    }
 }

@@ -3,6 +3,8 @@ package nl.bdekk.writeapi.dao;
 import nl.bdekk.writeapi.database.RepositoryConnection;
 import nl.bdekk.writeapi.domain.ProjectFile;
 import nl.bdekk.writeapi.domain.entity.FileEntity;
+import nl.bdekk.writeapi.domain.entity.ProjectEntity;
+import nl.bdekk.writeapi.helpers.FileHelper;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.Repository;
@@ -14,7 +16,8 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class FileDao {
@@ -25,6 +28,8 @@ public class FileDao {
 
     @Inject
     private RepositoryConnection con;
+
+    private final String FILE_TYPE = "md";
 
     public String getFile(long fileId) {
         Optional<FileEntity> fileOpt = getFileEntity(fileId);
@@ -68,12 +73,41 @@ public class FileDao {
                 e.printStackTrace();
             }
 
-            manager.getTransaction().begin();
             if (updatedFile.getName() != null && !file.getName().equals(updatedFile.getName())) {
                 file.setName(updatedFile.getName());
             }
-            manager.getTransaction().commit();
+            this.save(file);
         }
         return commit != null;
+    }
+
+    public ProjectFile createFile(long projectId, String name) throws IOException, GitAPIException {
+        Optional<ProjectEntity> entity = FileHelper.getProjectEntityById(manager, projectId);
+        if(!entity.isPresent()) {
+            return null;
+        }
+
+        ProjectEntity projectEntity = entity.get();
+        Repository repo = con.getRepo(Paths.get(projectEntity.getDirectory()));
+
+        final String fileText = "#" + name + "\n Happy writing!";
+        con.addFile(repo, name + "." + FILE_TYPE, fileText.getBytes());
+        con.commit(repo, "Added file." + name, null);
+        con.push(repo);
+
+        Optional<Map.Entry<String, String>> file = con.getFileFromCommit("HEAD", repo, name, "");
+        ProjectFile pf = null;
+        if(file.isPresent()) {
+            FileEntity fe = FileHelper.convertFileToFileEntity(file.get(), projectEntity);
+            this.save(fe);
+            pf = FileHelper.convertFileEntityToProjectFile(fe);
+        }
+        return pf;
+    }
+
+    private void save(Object object) {
+        manager.getTransaction().begin();
+        manager.persist(object);
+        manager.getTransaction().commit();
     }
 }
