@@ -34,7 +34,7 @@ public class FileIT {
                 .contentType(ContentType.JSON)
                 .body(json)
                 .when()
-                .put(TestUtils.URL + "/project/1/file/1")
+                .put(TestUtils.URL + "/project/1/file/23")
                 .then()
                 .statusCode(200)
                 .body("content", equalTo("Content"), "name", equalTo("file1"));
@@ -52,6 +52,6 @@ public class FileIT {
                 .post(TestUtils.URL + "/project/1/file")
                 .then()
                 .statusCode(201)
-                .body("content", equalTo("Content"), "name", equalTo("file1"));
+                .body("name", equalTo("file1.md"));
     }
 }

@@ -90,12 +90,13 @@ public class FileDao {
         ProjectEntity projectEntity = entity.get();
         Repository repo = con.getRepo(Paths.get(projectEntity.getDirectory()));
 
+        final String fileName = name + "." + FILE_TYPE;
         final String fileText = "#" + name + "\n Happy writing!";
-        con.addFile(repo, name + "." + FILE_TYPE, fileText.getBytes());
+        con.addFile(repo, fileName, fileText.getBytes());
         con.commit(repo, "Added file." + name, null);
         con.push(repo);
 
-        Optional<Map.Entry<String, String>> file = con.getFileFromCommit("HEAD", repo, name, "");
+        Optional<Map.Entry<String, String>> file = con.getFileFromCommit("HEAD", repo, fileName, "");
         ProjectFile pf = null;
         if(file.isPresent()) {
             FileEntity fe = FileHelper.convertFileToFileEntity(file.get(), projectEntity);

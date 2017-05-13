@@ -4,9 +4,12 @@ import nl.bdekk.writeapi.domain.Error;
 import nl.bdekk.writeapi.domain.Project;
 import nl.bdekk.writeapi.domain.ProjectFile;
 import nl.bdekk.writeapi.services.FileService;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.json.JsonObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -43,7 +46,17 @@ public class FileResource {
         if(!success) {
             response = Response.status(Response.Status.BAD_REQUEST);
         }
-        return response.build();
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("success", success);
+        } catch (JSONException e) {
+            Error err = new Error();
+            err.setMessage(e.getMessage());
+            response = Response.status(Response.Status.BAD_REQUEST).entity(err);
+        }
+
+        return response.entity(json).build();
     }
 
 
