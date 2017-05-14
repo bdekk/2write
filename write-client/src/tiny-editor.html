@@ -138,8 +138,6 @@
     </div>
         <div id='editor' contenteditable="true"></div>
     </div>
-
-
   </template>
 
 
@@ -213,9 +211,9 @@
       insertHtmlAfterSelection(html) {
         var sel, range, expandedSelRange, node;
         if (this.shadowRoot.getSelection) {
-            sel = this.shadowRoot.getSelection;
+            sel = this.shadowRoot.getSelection();
             if (sel.getRangeAt && sel.rangeCount) {
-                range = this.shadowRoot.getSelection.getRangeAt(0);
+                range = this.shadowRoot.getSelection().getRangeAt(0);
                 expandedSelRange = range.cloneRange();
                 range.collapse(false);
 

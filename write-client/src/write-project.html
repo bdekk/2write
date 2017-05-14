@@ -112,7 +112,7 @@
 
           fileUrl: {
             type: String,
-            value: "http://localhost:8080/file"
+            computed: 'computeFileUrl(project.id)'
           },
 
           project: {
@@ -139,6 +139,10 @@
         super.ready();
       }
 
+      computeFileUrl(projectId) {
+        return "http://localhost:8080/project/" + projectId + "/file/";
+      }
+
       _pageActivated(page) {
         if(this.route.path) {
           let projectUrl = this.projectUrl + this.route.path;
@@ -152,10 +156,10 @@
       }
 
       _saveFile(event) {
-        if(!this.selectedFile) {
+        if(!this.selectedFile.id && !this.project) {
           this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "error", "message":  "Could not detect selected file."}, bubbles: true, composed: true}));
         } else {
-            this.$.updateFileAjax.url = this.fileUrl + "/" + this.selectedFile.id;
+            this.$.updateFileAjax.url = this.fileUrl + selectedFile.id;
             this.$.updateFileAjax.body = JSON.stringify({"content": this.selectedFile.content});
             this.$.updateFileAjax.generateRequest();
         }
@@ -180,8 +184,9 @@
 
       _openFile(event) {
         let file = event.model.__data.file
-        this.$.getFileAjax.url = this.fileUrl + "/" + file.id;
         this.selectedFile.id = file.id;
+        this.$.getFileAjax.url = this.fileUrl + file.id;
+        // this.selectedFile.id = file.id;
         this.$.getFileAjax.generateRequest();
       }
 
