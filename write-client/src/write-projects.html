@@ -169,6 +169,7 @@
         if(project) {
           this.push('projects', project);
           this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "success", "message":  "Project created."}, bubbles: true, composed: true}));
+          this.dispatchEvent(new CustomEvent('changePage',  {detail: {"page": "project/" + project.id}, bubbles: true, composed: true}));
         }
         
       }

@@ -17,6 +17,10 @@
         padding: 10px;
       }
 
+      paper-input, paper-textarea {
+        --paper-input-container-focus-color: var(--app-secondary-color);
+      }
+
       paper-button {
         color: #fff;
         background-color: var(--app-secondary-color);
@@ -41,7 +45,7 @@
     <paper-dialog opened="{{open}}" id="newProject">
         <h2>New Project</h2>
         <paper-input id="title" label="Book title"></paper-input>
-        <paper-textarea id="description" label="description"></paper-textarea>
+        <paper-textarea id="description" label="Description"></paper-textarea>
         <div class="buttons">
           <paper-button dialog-dismiss on-click="close" class="red">Cancel</paper-button>
           <paper-button dialog-confirm autofocus on-click="_newProject" class="green">Create</paper-button>
