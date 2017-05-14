@@ -20,13 +20,16 @@
       :host {
         --app-primary-color: #fafafa;
         --app-secondary-color: #013a5d;
+        --app-secondary-color-light: #67A0C3;
+        --primary-text-color: #fafafa;
+        --secondary-text-color: #ff6b6b;
 
         display: block;
       }
 
       app-header {
-        color: var(--app-secondary-color);
-        background-color: var(--app-primary-color);
+        color: var(--primary-text-color);
+        background-color: var(--app-secondary-color);
         border-bottom: 1px solid #ddd;
       }
 
@@ -221,7 +224,6 @@
 
     window.customElements.define(MyApp.is, MyApp);
   </script>
-  <!--Start of Tawk.to Script-->
   <script type="text/javascript">
     var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
     (function(){
