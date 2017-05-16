@@ -3,7 +3,7 @@ swarm:
     data-sources:
       writeDS:
         driver-name: pg
-        connection-url: jdbc:postgresql://localhost:5432/write
+        connection-url: jdbc:postgresql://localhost:5433/write-auth
         user-name: write
         password: z9bDGHs3DTGUCvx9
     jdbc-drivers:
