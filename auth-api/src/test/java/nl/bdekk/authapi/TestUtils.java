@@ -1,5 +1,6 @@
 package nl.bdekk.authapi;
 
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.util.TextUtils;

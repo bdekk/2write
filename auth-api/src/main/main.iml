@@ -11,5 +11,7 @@
     <orderEntry type="library" name="Maven: javax:javaee-api:7.0" level="project" />
     <orderEntry type="library" name="Maven: org.wildfly.swarm:container:2017.4.0" level="project" />
     <orderEntry type="library" name="Maven: org.wildfly.swarm:datasources:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.7.4" level="project" />
+    <orderEntry type="library" name="Maven: com.auth0:java-jwt:3.2.0" level="project" />
   </component>
 </module>

@@ -10,5 +10,7 @@
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.7.4" level="project" />
     <orderEntry type="library" name="Maven: org.wildfly.swarm:container:2017.4.0" level="project" />
+    <orderEntry type="library" name="Maven: javax:javaee-api:7.0" level="project" />
+    <orderEntry type="library" name="Maven: org.eclipse.jgit:org.eclipse.jgit:4.7.0.201704051617-r" level="project" />
   </component>
 </module>

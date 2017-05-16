@@ -3,10 +3,10 @@ package nl.bdekk.authapi.domain;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY )
-public class Error {
+public class ErrorObj {
     private String message;
 
-    public Error() {
+    public ErrorObj() {
         this.message = message;
     }
 

@@ -14,11 +14,12 @@
     <version.slf4j>1.7.25</version.slf4j>
     <version.rest-assured>3.0.2</version.rest-assured>
     <failOnMissingWebXml>false</failOnMissingWebXml>
-    <version.jackson>2.8.8</version.jackson>
+    <version.jackson>2.8.7</version.jackson>
     <maven.compiler.source>1.8</maven.compiler.source>
     <maven.compiler.target>1.8</maven.compiler.target>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <version.hibernate>5.2.5.Final</version.hibernate>
+    <version.jwt>3.2.0</version.jwt>
     <version.hibernate.javax.persistence>1.0.0.Final</version.hibernate.javax.persistence>
 
     <!-- liquibase postgres -->
@@ -91,6 +92,18 @@
     </dependency>
 
     <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>${version.jackson}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-annotations</artifactId>
+      <version>${version.jackson}</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
       <version>20090211</version>
@@ -134,6 +147,12 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>${version.junit}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>com.auth0</groupId>
+      <artifactId>java-jwt</artifactId>
+      <version>${version.jwt}</version>
     </dependency>
 
     <dependency>
