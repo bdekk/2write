@@ -2,9 +2,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>nl.bdekk.product-api</groupId>
-  <artifactId>product-api</artifactId>
-  <name>product-api</name>
+  <groupId>nl.bdekk.auth-api</groupId>
+  <artifactId>auth-api</artifactId>
+  <name>auth-api</name>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>war</packaging>
 
@@ -48,9 +48,6 @@
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>wildfly-swarm-plugin</artifactId>
         <version>${version.wildfly.swarm}</version>
-        <!--<configuration>-->
-          <!--<mainClnl.bdekk.productapipieapi.application.Main</mainClass>-->
-        <!--</configuration>-->
         <executions>
           <execution>
             <goals>
@@ -116,22 +113,6 @@
       <artifactId>hibernate-jpa-2.1-api</artifactId>
       <version>${version.hibernate.javax.persistence}</version>
     </dependency>
-    <!--<dependency>-->
-      <!--<groupId>org.hibernate</groupId>-->
-      <!--<artifactId>hibernate-core</artifactId>-->
-      <!--<version>${version.hibernate}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.hibernate</groupId>-->
-      <!--<artifactId>hibernate-java8</artifactId>-->
-      <!--<version>${version.hibernate}</version>-->
-    <!--</dependency>-->
-    <!--<dependency>-->
-      <!--<groupId>org.hibernate</groupId>-->
-      <!--<artifactId>hibernate-jpamodelgen</artifactId>-->
-      <!--<version>${version.hibernate}</version>-->
-      <!--<scope>compile</scope>-->
-    <!--</dependency>-->
 
     <dependency>
       <groupId>org.postgresql</groupId>
@@ -139,52 +120,17 @@
       <version>${version.postgres}</version>
     </dependency>
 
-    <!-- Core Library -->
-      <dependency>
-        <groupId>org.eclipse.jgit</groupId>
-        <artifactId>org.eclipse.jgit</artifactId>
-        <version>4.7.0.201704051617-r</version>
-      </dependency>
+    <!-- test dependencies -->
+    <dependency>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <version>${version.rest-assured}</version>
+    </dependency>
 
-    <!-- Smart HTTP Servlet -->
-      <dependency>
-        <groupId>org.eclipse.jgit</groupId>
-        <artifactId>org.eclipse.jgit.http.server</artifactId>
-        <version>4.7.0.201704051617-r</version>
-      </dependency>
-
-    <!-- AWT UI Helpers -->
-      <dependency>
-        <groupId>org.eclipse.jgit</groupId>
-        <artifactId>org.eclipse.jgit.ui</artifactId>
-        <version>4.7.0.201704051617-r</version>
-      </dependency>
-
-      <dependency>
-        <groupId>org.eclipse.jgit</groupId>
-        <artifactId>org.eclipse.jgit.junit</artifactId>
-        <version>4.7.0.201704051617-r</version>
-      </dependency>
-
-      <!-- test dependencies -->
-      <dependency>
-        <groupId>io.rest-assured</groupId>
-        <artifactId>rest-assured</artifactId>
-        <version>${version.rest-assured}</version>
-      </dependency>
-
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>${version.junit}</version>
-        <scope>test</scope>
-      </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${version.junit}</version>
+    </dependency>
   </dependencies>
-
-  <repositories>
-    <repository>
-      <id>jgit-repository</id>
-      <url>https://repo.eclipse.org/content/groups/releases/</url>
-    </repository>
-  </repositories>
 </project>
