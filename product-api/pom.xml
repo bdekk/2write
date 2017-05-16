@@ -49,9 +49,9 @@
         <groupId>org.wildfly.swarm</groupId>
         <artifactId>wildfly-swarm-plugin</artifactId>
         <version>${version.wildfly.swarm}</version>
-        <!--<configuration>-->
-          <!--<mainClnl.bdekk.productapipieapi.application.Main</mainClass>-->
-        <!--</configuration>-->
+        <configuration>
+          <mainClass>nl.bdekk.productapi.application.Main</mainClass>
+        </configuration>
         <executions>
           <execution>
             <goals>

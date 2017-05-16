@@ -110,7 +110,7 @@
           
           projectUrl: {
             type: String,
-            value: "http://localhost:8080/project"
+            value: "http://localhost:8080/rest/project"
           },
 
           fileUrl: {
@@ -143,7 +143,7 @@
       }
 
       computeFileUrl(projectId) {
-        return "http://localhost:8080/project/" + projectId + "/file/";
+        return "http://localhost:8080/rest/project/" + projectId + "/file/";
       }
 
       _openDrawer() {
@@ -202,9 +202,9 @@
           let data = this.arrayBufferToString(buffer);
           if(data) {
             this.set('selectedFile.content', data);
-            // if(this.$.drawer && this.$.drawer.opened) {
-            //   this.$.drawer.close();
-            // }
+            if(this.$.drawer && this.$.drawer.opened) {
+              this.$.drawer.close();
+            }
           } else {
            this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "error", "message":  "Could not retrieve file data."}, bubbles: true, composed: true}));
           }
