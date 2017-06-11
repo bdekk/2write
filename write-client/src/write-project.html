@@ -35,8 +35,8 @@
           };
       }
 
-      paper-icon-button[hidden] {
-          display: none;
+      [hidden] {
+        display: none;
       }
 
       app-toolbar.drawer-toolbar {
@@ -95,8 +95,10 @@
         </app-drawer>
 
         <paper-icon-button hidden$="[[wide]]" on-click="_openDrawer" icon="menu"></paper-icon-button>
-        <write-editor id="editor" content={{selectedFile.content}}></write-editor>
-        <paper-button primary raised on-click="_saveFile">Save</paper-button>
+        <div hidden$="[[!isSelected]]">
+          <write-editor id="editor" content={{selectedFile.content}}></write-editor>
+          <paper-button primary raised on-click="_saveFile">Save</paper-button>
+        </div>
     </app-drawer-layout>
     
   </template>
@@ -131,6 +133,10 @@
               value: {}
           },
 
+          isSelected: {
+            type: Boolean,
+            computed: '_isSelected(selectedFile)'
+          },
           route: {
             type: Object
           },
@@ -206,12 +212,16 @@
           let data = this.arrayBufferToString(buffer);
           if(data) {
             this.set('selectedFile.content', data);
-            if(this.$.drawer && this.$.drawer.opened) {
+            if(this.$.drawer && this.$.drawer.opened && !this.wide) {
               this.$.drawer.close();
             }
           } else {
            this.dispatchEvent(new CustomEvent('log',  {detail: {"type": "error", "message":  "Could not retrieve file data."}, bubbles: true, composed: true}));
           }
+      }
+
+      _isSelected(selectedFile) {
+        return !(selectedFile == null || (Object.keys(selectedFile).length === 0 && selectedFile.constructor === Object));
       }
 
       arrayBufferToString(buffer){
