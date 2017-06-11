@@ -9,6 +9,7 @@
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/editor-icons.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-toast/paper-toast.html">
@@ -57,6 +58,10 @@
           display: inline-block;
       }
 
+      .navbar paper-button[disabled] {
+        background-color: transparent;
+      }
+
       app-toolbar:not([wide]) paper-button {
           min-width:0;  
       }
@@ -100,10 +105,10 @@
       <app-header slot="header" condenses reveals effects="waterfall">
         <app-toolbar sticky wide$="[[wide]]" >
           <div main-title>2 Write</div>
-          <paper-button raised primary on-click="newProject">
+          <!--<paper-button raised primary on-click="newProject">
                 <iron-icon hidden$="[[wide]]" icon="icons:create-new-folder"></iron-icon> 
                 <span hidden$="[[!wide]]">New project</span>
-          </paper-button>
+          </paper-button>-->
           <iron-selector selected="{{routeData.page}}" attr-for-selected="name" role="navigation" class="navbar">
             <!--<a name="view1" href="view1">View One</a>
             <a name="view2" href="view2">View Two</a>
@@ -112,13 +117,13 @@
                 <iron-icon hidden$="[[wide]]" icon="icons:folder-open"></iron-icon> 
                 <span hidden$="[[!wide]]">Projects</span>
               </paper-button>
-            <paper-button name="view2">
-               <iron-icon hidden$="[[wide]]" icon="icons:folder-open"></iron-icon> 
-                <span hidden$="[[!wide]]" >User</span>
+            <paper-button disabled name="view2">
+               <iron-icon hidden$="[[wide]]" icon="icons:account-box"></iron-icon> 
+                <span hidden$="[[!wide]]">Profile</span>
             </paper-button>
-            <paper-button name="view3">
-               <!--<iron-icon hidden$="[[wide]]" icon="icons:folder-open"></iron-icon> -->
-                <span hidden$="[[!wide]]">View 3</span>
+            <paper-button disabled name="view3">
+               <iron-icon hidden$="[[wide]]" icon="editor:publish"></iron-icon> 
+                <span hidden$="[[!wide]]">Publish</span>
             </paper-button>
           </iron-selector>
         </app-toolbar>
@@ -130,8 +135,8 @@
             fallback-selection="view404"
             selected-attribute="activated"
             role="main">
-          <write-projects name="projects" ></write-projects>
-          <write-project name="project" route={{subroute}}></write-project>
+          <write-projects wide$="[[wide]]" name="projects" ></write-projects>
+          <write-project wide$="[[wide]]" name="project" route={{subroute}}></write-project>
           <write-view2 name="view2"></write-view2>
           <write-view3 name="view3"></write-view3>
           <write-view404 name="view404"></write-view404>
